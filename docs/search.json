@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "posts/post-with-code/RB-A2-Annotation.html",
+    "href": "posts/post-with-code/RB-A2-Annotation.html",
+    "title": "Assignment2",
+    "section": "",
+    "text": "Note\n\n\n\nI added additional content to your YAML header. Your name, date, the course information are important and should be included in all future assignements. Also added the code options."
+  },
+  {
+    "objectID": "posts/post-with-code/RB-A2-Annotation.html#my-dataset",
+    "href": "posts/post-with-code/RB-A2-Annotation.html#my-dataset",
+    "title": "Assignment2",
+    "section": "My dataset",
+    "text": "My dataset\nThis is a data set collected during my Masters degree research. The data contains information on livestock and the ticks collected off them. The ticks were subsequently identified morphologically and the pathogens that these ticks harbored were identified using PCR on extracted nucleic acid.\nI’m putting this dataset together in response to Assignment 2 from the BCB 504 class."
+  },
+  {
+    "objectID": "posts/post-with-code/RB-A2-Annotation.html#data-collection",
+    "href": "posts/post-with-code/RB-A2-Annotation.html#data-collection",
+    "title": "Assignment2",
+    "section": "Data collection",
+    "text": "Data collection\nThe data were collected from two parts of Ghana (Greater Accra in the South and Upper East in the North). Sampling sites were carefully chosen based on known climate and environmental conditions that influence arthropods and their ability to transmit pathogens.\n\n\n\n\n\n\nNote\n\n\n\nI cleaned up some of the writing in the preceding sections. Below, I renamed your data file to just Ronald.xlsx. Your previous data file had parentheses in the name, which can cause major problems in automated data analyses and visualizations. I would also advise that you start thinking about a coherent naming convention for your data files. Something that contains information about the data itself, such as RB_MSThesisData_Date.xlsx . Also got rid of the View() statement as it was redundant with glimpse().\n\n\n\n\n\n\nData\nThe following shows the basic formatting of the data file using the glimpse() function:\n\n\nCode\ntickdata<-Results_For_Ronald_\nglimpse(tickdata)\n\n\nRows: 706\nColumns: 15\n$ Date                 <chr> \"28/01/2020\", NA, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ `Field ID`           <chr> \"GVS-A-T-001\", NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ Location             <chr> \"Burma Camp\", NA, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ Animal               <chr> \"Cattle\", \"Cattle\", \"Cattle\", \"Cattle\", \"Cattle\",…\n$ `Animal Sex`         <chr> \"Female\", \"Female\", \"Female\", \"Female\", \"Female\",…\n$ `Age (years)`        <chr> \"4\", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …\n$ `Body Part`          <chr> \"Anal\", \"Anal\", \"Anal\", \"Anal\", \"Anal\", \"Anal\", \"…\n$ `Vector count`       <dbl> 10, NA, NA, NA, NA, NA, NA, NA, NA, NA, 2, NA, 3,…\n$ `Vector Sex`         <chr> \"Female\", \"Female\", \"Female\", \"Female\", \"Male\", \"…\n$ `Lab ID`             <chr> \"T001\", \"T002\", \"T003\", \"T004\", \"T005\", \"T006\", \"…\n$ `RNA Extracted`      <chr> \"RNA1\", \"RNA2\", \"RNA3\", \"RNA4\", \"RNA5\", \"RNA6\", \"…\n$ Species              <chr> \"Hyalomma rufipes\", \"Hyalomma rufipes\", \"Hyalomma…\n$ `Rickettsia `        <chr> \"Negative\", \"Negative\", \"Negative\", \"Negative\", \"…\n$ `Rickettsia africae` <chr> \"Negative\", \"Negative\", \"Negative\", \"Negative\", \"…\n$ CCHFV                <chr> \"Negative\", \"Negative\", \"Negative\", \"Negative\", \"…\n\n\nNote that some of the Attributes have NA entries. This is a consequence of the data file, and I will fill in those entries and move the data file toward a TidyData format as I progress through the course.\nBelow is the data dictionary for my data file:\n\n\nCode\n tickdata_attributes <- read_excel(\"TickData_Attributes.xlsx\")\n options(knitr.kable.NA = '')\n knitr::kable(tickdata_attributes,caption='Data Dictionary for the data file Ronald.xlsx')\n\n\n\nData Dictionary for the data file Ronald.xlsx\n\n\n\n\n\n\n\nAttribute\nType\nNote\n\n\n\n\n\n\n\n\n\nDate\nOrdinal\nDay sampling was done\n\n\nField ID\nOrdinal\nUnique ID given to livestock from which ticks were off on the field\n\n\nLocation\nCategorical\nLocation from which sampling was done\n\n\nAnimal\nCategorical\nType of livestock samplng tick sampling was done on\n\n\nAnimal sex\nCategorical\nGender of livestock sampling was done\n\n\nAge (years)\nOrdinal\nAge of livestock tick sampling was done\n\n\nBody part\nCategorical\nPart of livestock ticks were collected\n\n\nVector count\nQuantitative\nNumber of ticks per livestock\n\n\nVector sex\nQuantitative\nSex of tick\n\n\nLab ID\nOrdinal\nUnique ID given to tick in the lab after morphological identification\n\n\nRNA extracted\nOrdinal\nUnique ID given to tick extracts in the lab\n\n\nSpecies\nCategorical\nSpecies of morphologically identified ticks\n\n\nRickettsia\nQuantitative\nResults of tick extracts after PCR to detect Rickettsia\n\n\nRickettsia africae\nQuantitative\nResults of tick extracts after PCR to detect Rickettsia africae\n\n\nCCHFV\nQuantitative\nResults of tick extracts after PCR to detect CCHFV\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nSuppressed the NA results in your dictionairy with the options() code, and added a caption to your table."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Assignment 3",
+    "section": "",
+    "text": "This is a data set collected during my Masters degree research. The data contains information on livestock and the ticks collected off them. The ticks were subsequently identified morphologically and the pathogens that these ticks harbored were identified using PCR on extracted nucleic acid.\nI’m putting this dataset together in response to [Assignment 2](https://professorpolymorphic.github.io/RobisonWebSite/BCB520/posts/A2-YourData/) from the [BCB 504](https://professorpolymorphic.github.io/RobisonWebSite/BCB520/BCB520.html) class."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#data-collection",
+    "href": "posts/post-with-code/index.html#data-collection",
+    "title": "Assignment 3",
+    "section": "Data collection",
+    "text": "Data collection\nThe data were collected from two parts of Ghana (Greater Accra in the South and Upper East in the North). Sampling sites were carefully chosen based on known climate and environmental conditions that influence arthropods and their ability to transmit pathogens."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#data",
+    "href": "posts/post-with-code/index.html#data",
+    "title": "Assignment 3",
+    "section": "Data",
+    "text": "Data\nThe following shows the basic formatting of the data file using the `glimpse()` function:\n\n\nCode\ntickdata<-Results_For_Ronald_\nglimpse(tickdata)\n\n\nRows: 706\nColumns: 15\n$ Date                 <chr> \"28/01/2020\", NA, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ `Field ID`           <chr> \"GVS-A-T-001\", NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ Location             <chr> \"Burma Camp\", NA, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ Animal               <chr> \"Cattle\", \"Cattle\", \"Cattle\", \"Cattle\", \"Cattle\",…\n$ `Animal Sex`         <chr> \"Female\", \"Female\", \"Female\", \"Female\", \"Female\",…\n$ `Age (years)`        <chr> \"4\", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …\n$ `Body Part`          <chr> \"Anal\", \"Anal\", \"Anal\", \"Anal\", \"Anal\", \"Anal\", \"…\n$ `Vector count`       <dbl> 10, NA, NA, NA, NA, NA, NA, NA, NA, NA, 2, NA, 3,…\n$ `Vector Sex`         <chr> \"Female\", \"Female\", \"Female\", \"Female\", \"Male\", \"…\n$ `Lab ID`             <chr> \"T001\", \"T002\", \"T003\", \"T004\", \"T005\", \"T006\", \"…\n$ `RNA Extracted`      <chr> \"RNA1\", \"RNA2\", \"RNA3\", \"RNA4\", \"RNA5\", \"RNA6\", \"…\n$ Species              <chr> \"Hyalomma rufipes\", \"Hyalomma rufipes\", \"Hyalomma…\n$ `Rickettsia `        <chr> \"Negative\", \"Negative\", \"Negative\", \"Negative\", \"…\n$ `Rickettsia africae` <chr> \"Negative\", \"Negative\", \"Negative\", \"Negative\", \"…\n$ CCHFV                <chr> \"Negative\", \"Negative\", \"Negative\", \"Negative\", \"…\n\n\nNote that some of the Attributes have `NA` entries. This is a consequence of the data file, and I will fill in those entries and move the data file toward a\n[TidyData](https://towardsdatascience.com/what-is-tidy-data-d58bb9ad2458) format as I progress through the course.\nBelow is the data dictionary for my data file:\n\n\nCode\ntickdata_attributes <- read_excel(\"TickData_Attributes.xlsx\")\n options(knitr.kable.NA = '')\n knitr::kable(tickdata_attributes,caption='Data Dictionary for the data file Ronald.xlsx')\n\n\n\nData Dictionary for the data file Ronald.xlsx\n\n\n\n\n\n\n\nAttribute\nType\nNote\n\n\n\n\n\n\n\n\n\nDate\nOrdinal\nDay sampling was done\n\n\nField ID\nOrdinal\nUnique ID given to livestock from which ticks were off on the field\n\n\nLocation\nCategorical\nLocation from which sampling was done\n\n\nAnimal\nCategorical\nType of livestock samplng tick sampling was done on\n\n\nAnimal sex\nCategorical\nGender of livestock sampling was done\n\n\nAge (years)\nOrdinal\nAge of livestock tick sampling was done\n\n\nBody part\nCategorical\nPart of livestock ticks were collected\n\n\nVector count\nQuantitative\nNumber of ticks per livestock\n\n\nVector sex\nQuantitative\nSex of tick\n\n\nLab ID\nOrdinal\nUnique ID given to tick in the lab after morphological identification\n\n\nRNA extracted\nOrdinal\nUnique ID given to tick extracts in the lab\n\n\nSpecies\nCategorical\nSpecies of morphologically identified ticks\n\n\nRickettsia\nQuantitative\nResults of tick extracts after PCR to detect Rickettsia\n\n\nRickettsia africae\nQuantitative\nResults of tick extracts after PCR to detect Rickettsia africae\n\n\nCCHFV\nQuantitative\nResults of tick extracts after PCR to detect CCHFV"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first time I will be hosting a blog. This is mainly going to be about my attempts at data science and data visualization and a steady journey through while I get better each step of the way, of course, with my Professor’s help and weekend zoom calls! Stick with me, and let’s get out of the comfort zone!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Ronald’s BCB504 Portfolio",
+    "section": "",
+    "text": "Assignment2\n\n\nBCB 504 - Foundations of Data Visualization\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment 3\n\n\nBCB 504 - Foundations of Data Visualization\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Ronald’s BCB504 Portfolio",
+    "section": "",
+    "text": "About this blog"
+  }
+]
