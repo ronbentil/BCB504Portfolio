@@ -1,0 +1,59 @@
+---
+title: "Assignment 3"
+subtitle: "BCB 504 - Foundations of Data Visualization"
+author: "Ronald Bentil"
+date: "2023-01-30"
+format: html
+code-fold: true
+code-tools: true
+---
+
+## My dataset
+
+
+This is a data set collected during my Masters degree research. The data contains information on livestock and the ticks collected off them. The ticks were subsequently identified morphologically and the pathogens that these ticks harbored were identified using PCR on extracted nucleic acid.
+
+
+I'm putting this dataset together in response to \[Assignment 2\](https://professorpolymorphic.github.io/RobisonWebSite/BCB520/posts/A2-YourData/) from the \[BCB 504\](https://professorpolymorphic.github.io/RobisonWebSite/BCB520/BCB520.html) class.
+
+## Data collection
+
+
+The data were collected from two parts of Ghana (Greater Accra in the South and Upper East in the North). Sampling sites were carefully chosen based on known climate and environmental conditions that influence arthropods and their ability to transmit pathogens.
+
+```{r}
+#| echo: false
+#| output: false
+
+library(tidyverse)
+library(readxl)
+
+Results_For_Ronald_ <- read_excel("Ronald.xlsx")
+
+```
+
+## Data
+
+
+The following shows the basic formatting of the data file using the \`glimpse()\` function:
+
+```{r}
+
+tickdata<-Results_For_Ronald_
+glimpse(tickdata)
+
+```
+
+Note that some of the Attributes have \`NA\` entries. This is a consequence of the data file, and I will fill in those entries and move the data file toward a
+
+[TidyData\](https://towardsdatascience.com/what-is-tidy-data-d58bb9ad2458) format as I progress through the course.
+
+
+Below is the data dictionary for my data file:
+
+```{r}
+tickdata_attributes <- read_excel("TickData_Attributes.xlsx")
+ options(knitr.kable.NA = '')
+ knitr::kable(tickdata_attributes,caption='Data Dictionary for the data file Ronald.xlsx')
+ 
+ ```
