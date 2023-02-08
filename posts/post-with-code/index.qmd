@@ -28,7 +28,7 @@ The data were collected from two parts of Ghana (Greater Accra in the South and 
 library(tidyverse)
 library(readxl)
 
-Results_For_Ronald_ <- read_excel("Ronald.xlsx")
+tickdata <- read_excel("Ronald.xlsx")
 
 ```
 
@@ -39,7 +39,6 @@ The following shows the basic formatting of the data file using the \`glimpse()\
 
 ```{r}
 
-tickdata<-Results_For_Ronald_
 glimpse(tickdata)
 
 ```
@@ -56,4 +55,19 @@ tickdata_attributes <- read_excel("TickData_Attributes.xlsx")
  options(knitr.kable.NA = '')
  knitr::kable(tickdata_attributes,caption='Data Dictionary for the data file Ronald.xlsx')
  
- ```
+```
+ 
+## Data Abstraction
+Per this assignment, my ACTION TARGET pair is: Annotate Distribution
+
+Below, I am going to create a visualization of the distribution of ticks species. This is to create a total count of the different species of ticks.
+
+```{r}
+library(ggplot2)
+ggplot(tickdata, aes(x=Species)) +
+    geom_bar(colour="blue", fill="grey", stat="count")
+``` 
+ 
+ 
+
+ 
