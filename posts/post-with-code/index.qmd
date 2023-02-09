@@ -69,7 +69,8 @@ ggplot(tickdata, aes(x=Species)) +
   theme(axis.text.x=element_text(angle = -90, hjust = 0))
 ``` 
  
-Discover distribution of tick abundance on livestock
+My second ACTION TARGET pair would be to further Discover the  distribution of tick abundance on livestock
+
 ```{r}
 ggplot(tickdata, aes(x=Vectorcount)) +
     geom_bar(colour="blue", fill="grey", stat="count")+
