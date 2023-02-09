@@ -65,9 +65,42 @@ Below, I am going to create a visualization of the distribution of ticks species
 ```{r}
 library(ggplot2)
 ggplot(tickdata, aes(x=Species)) +
-    geom_bar(colour="blue", fill="grey", stat="count")
+    geom_bar(colour="blue", fill="grey", stat="count")+
+  theme(axis.text.x=element_text(angle = -90, hjust = 0))
 ``` 
  
- 
+Discover distribution of tick abundance on livestock
+```{r}
+ggplot(tickdata, aes(x=Vectorcount)) +
+    geom_bar(colour="blue", fill="grey", stat="count")+
+  theme(axis.text.x=element_text(angle = -90, hjust = 0))
+```
 
- 
+Earlier, I indicated the existence of some \`NA\` entries in some of the attributes. 
+The loop  below was created by my super cool Professor to fill in the 'missing' data to be able to ascertain whether this distribution varies among tick species, since it is evident that the total counts per figure above are different.
+
+```{r}
+for (i in 1:length(tickdata$FieldID)) {
+  if (is.na(tickdata$FieldID[i])==TRUE) {
+
+    tickdata$FieldID[i]<-tickdata$FieldID[i-1]
+    tickdata$Date[i]<-tickdata$Date[i-1]
+    tickdata$Location[i]<-tickdata$Location[i-1]
+    tickdata$Ageyears[i]<-tickdata$Ageyears[i-1]
+  }
+  if (is.na(tickdata$Vectorcount[i])==TRUE) {
+    tickdata$Vectorcount[i]<-tickdata$Vectorcount[i-1]
+  }
+}
+```
+Having done this, I can now visualize my vector count (number of ticks per livestock), grouped per tick species below. This confirms that that the distribution of ticks on livestock varied among tick species.
+
+```{r}
+ggplot(tickdata, aes(x=Vectorcount)) + 
+    geom_bar(colour="blue", fill="grey", stat="count")+
+  facet_wrap(~Species)+
+  theme(axis.text.x=element_text(angle = -90, hjust = 0))
+```
+
+
+
