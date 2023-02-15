@@ -1,18 +1,44 @@
 ---
 title: "Ronald's BCB504 Portfolio"
-image: profile.jpg
+image: Profile photo.jpg
 about:
-  template: jolla
+  template: trestles
   links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
+      href: https://www.linkedin.com/in/ronald-bentil-242279108
     - icon: github
       text: Github
-      href: https://github.com
+      href: https://github.com/ronbentil/BCB504Portfolio
 ---
+## About author
+I am a first year PhD student and a Graduate Research Assistant in Dr. Shirley Luckhart's Lab (https://luckhartlab.com/)
 
-About this blog
+**Email**:  bent4061@vandals.uidaho.edu
+
+**Office**: Gibb Hall, Room 223
+
+
+## Education
+**University of Idaho**   || Moscow, Idaho                                                          
+  
+  PhD in Entomology (01/2023 to Present)
+
+
+**University of Ghana**   || Legon, Accra
+  
+  MPhil in Applied Parasitology (08/2019 to 12/2022)
+
+
+**University of Ghana**   || Legon, Accra 
+  
+  Bsc in Biochemistry, Cell and Molecular Biology (09/2013 to 06/2017)
+
+
+
+
+
+
+
+
+

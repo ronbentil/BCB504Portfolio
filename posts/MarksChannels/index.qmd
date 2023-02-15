@@ -1,0 +1,11 @@
+---
+title: "Assignment 4"
+subtitle: "Marks and Channels"
+author: "Ronald Bentil"
+date: "2023-02-14"
+categories: [Assignment, DataViz]
+image: "Image.jpeg"
+code-fold: true
+code-tools: true
+description: "Exploring variable combinations of marks and channels for BCB 504"
+---
