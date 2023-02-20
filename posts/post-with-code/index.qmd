@@ -10,14 +10,11 @@ code-tools: true
 
 ## My dataset
 
-
 This is a data set collected during my Masters degree research. The data contains information on livestock and the ticks collected off them. The ticks were subsequently identified morphologically and the pathogens that these ticks harbored were identified using PCR on extracted nucleic acid.
-
 
 I'm putting this dataset together in response to \[Assignment 2\](https://professorpolymorphic.github.io/RobisonWebSite/BCB520/posts/A2-YourData/) from the \[BCB 504\](https://professorpolymorphic.github.io/RobisonWebSite/BCB520/BCB520.html) class.
 
 ## Data collection
-
 
 The data were collected from two parts of Ghana (Greater Accra in the South and Upper East in the North). Sampling sites were carefully chosen based on known climate and environmental conditions that influence arthropods and their ability to transmit pathogens.
 
@@ -34,7 +31,6 @@ tickdata <- read_excel("Ronald.xlsx")
 
 ## Data
 
-
 The following shows the basic formatting of the data file using the \`glimpse()\` function:
 
 ```{r}
@@ -45,8 +41,7 @@ glimpse(tickdata)
 
 Note that some of the Attributes have \`NA\` entries. This is a consequence of the data file, and I will fill in those entries and move the data file toward a
 
-[TidyData\](https://towardsdatascience.com/what-is-tidy-data-d58bb9ad2458) format as I progress through the course.
-
+\[TidyData\](https://towardsdatascience.com/what-is-tidy-data-d58bb9ad2458) format as I progress through the course.
 
 Below is the data dictionary for my data file:
 
@@ -56,8 +51,9 @@ tickdata_attributes <- read_excel("TickData_Attributes.xlsx")
  knitr::kable(tickdata_attributes,caption='Data Dictionary for the data file Ronald.xlsx')
  
 ```
- 
+
 ## Data Abstraction
+
 Per this assignment, my ACTION TARGET pair is: Annotate Distribution
 
 Below, I am going to create a visualization of the distribution of ticks species. This is to create a total count of the different species of ticks.
@@ -67,9 +63,9 @@ library(ggplot2)
 ggplot(tickdata, aes(x=Species)) +
     geom_bar(colour="blue", fill="grey", stat="count")+
   theme(axis.text.x=element_text(angle = -90, hjust = 0))
-``` 
- 
-My second ACTION TARGET pair would be to further Discover the  distribution of tick abundance on livestock
+```
+
+My second ACTION TARGET pair would be to further Discover the distribution of tick abundance on livestock
 
 ```{r}
 ggplot(tickdata, aes(x=Vectorcount)) +
@@ -77,8 +73,7 @@ ggplot(tickdata, aes(x=Vectorcount)) +
   theme(axis.text.x=element_text(angle = -90, hjust = 0))
 ```
 
-Earlier, I indicated the existence of some \`NA\` entries in some of the attributes. 
-The loop  below was created by my super cool Professor to fill in the 'missing' data to be able to ascertain whether this distribution varies among tick species, since it is evident that the total counts per figure above are different.
+Earlier, I indicated the existence of some \`NA\` entries in some of the attributes. The loop below was created by my super cool Professor to fill in the 'missing' data to be able to ascertain whether this distribution varies among tick species, since it is evident that the total counts per figure above are different.
 
 ```{r}
 for (i in 1:length(tickdata$FieldID)) {
@@ -94,6 +89,7 @@ for (i in 1:length(tickdata$FieldID)) {
   }
 }
 ```
+
 Having done this, I can now visualize my vector count (number of ticks per livestock), grouped per tick species below. This confirms that that the distribution of ticks on livestock varied among tick species.
 
 ```{r}
@@ -102,6 +98,3 @@ ggplot(tickdata, aes(x=Vectorcount)) +
   facet_wrap(~Species)+
   theme(axis.text.x=element_text(angle = -90, hjust = 0))
 ```
-
-
-
