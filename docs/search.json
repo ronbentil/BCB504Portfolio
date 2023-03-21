@@ -1,5 +1,54 @@
 [
   {
+    "objectID": "posts/NHL draft analytics/index.html",
+    "href": "posts/NHL draft analytics/index.html",
+    "title": "ASSIGNMENT 5",
+    "section": "",
+    "text": "In this assignment, I am going to practice creating visualizations for tabular data.\n\n\nCode\nlibrary(tidyverse)\n\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.0     ✔ readr     2.1.4\n✔ forcats   1.0.0     ✔ stringr   1.5.0\n✔ ggplot2   3.4.1     ✔ tibble    3.1.8\n✔ lubridate 1.9.2     ✔ tidyr     1.3.0\n✔ purrr     1.0.1     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the \u001b]8;;http://conflicted.r-lib.org/\u0007conflicted package\u001b]8;;\u0007 to force all conflicts to become errors\n\n\nCode\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(readxl)\n\nNHLDraft<-read.csv(\"NHLDraft.csv\")\nNHLDictionary<-read_excel(\"NHLDictionary.xlsx\")\n\nknitr::kable(NHLDictionary)\n\n\n\n\n\n\n\n\n\n\nAttribute\nType\nDescription\n\n\n\n\ndraftyear\nOrdinal\nCalendar year in which the player was drafted into the NHL.\n\n\nname\nItem\nFull name of the player.\n\n\nround\nOrdinal\nRound in which the player was drafted (1 to 7).\n\n\noverall\nOrdinal\nOverall draft position of the player (1 to 224)\n\n\npickinRound\nOrdinal\nPosition in which the player was drafted in their round (1 to 32).\n\n\nheight\nQuantitative\nPlayer height in inches.\n\n\nweight\nQuantitative\nPlayer weight in pounds.\n\n\nposition\nCategorical\nPlayer position (Forward, Defense, Goaltender)\n\n\nplayerId\nItem\nUnique ID (key) assigned to each player.\n\n\npostdraft\nOrdinal\nNumber of seasons since being drafted (0 to 20).\n\n\nNHLgames\nQuantitative\nNumber of games played in the NHL in that particular season (regular season is 82 games, playoffs are up to 28 more).\n\n\n\n\n\nIn this case, we have a dataframe with all the NHL drafted players since 2000, their position, their draft year and position, and then rows for each season since being drafted (postdraft). The key variable here is NHLgames, which tells us how many games they played in the NHL each season since being drafted.\nThe data dictionary above describes the items and attributes in the data."
+  },
+  {
+    "objectID": "posts/NHL draft analytics/index.html#simple-scatterplot",
+    "href": "posts/NHL draft analytics/index.html#simple-scatterplot",
+    "title": "ASSIGNMENT 5",
+    "section": "SIMPLE SCATTERPLOT",
+    "text": "SIMPLE SCATTERPLOT\nOne thing to realize about professional hockey is that it is pretty rare for a player to play in the NHL right after being drafted. Players get drafted when they are 18 years old, and they usually play in the juniors, minor leagues, or the NCAA for a bit to further develop.\nBelow is a scatter plot to visualize this phenomenon with the most recent draft classes.\n\n\nCode\ndraft2022<-NHLDraft%>%\n  filter(draftyear==2022 & postdraft==0)\n\nggplot(draft2022, aes(x=round, y=NHLgames))+\n  geom_point()\n\n\n\n\n\nAs observed, the players drafted in June of 2022 haven’t played much this season. There are few things wrong with this visualization, however:\n\nOverplotting. All those points on the y=0 line represent about 32 players each. Can you think of a way that adding extra channels might help?\nLabelling. Can we create a solid figure caption and better axis labels for this figure? In your caption, please specify the task(s) the visualizaiton is intended to facilitate, as well as the marks, channels, and key-value pairs used.\nKey-Value pairs: Looks like we are using “round” as a continuous variable. Can we change this to an ordered factor?"
+  },
+  {
+    "objectID": "posts/NHL draft analytics/index.html#expanded-scatterplot",
+    "href": "posts/NHL draft analytics/index.html#expanded-scatterplot",
+    "title": "ASSIGNMENT 5",
+    "section": "EXPANDED SCATTERPLOT",
+    "text": "EXPANDED SCATTERPLOT\nThe data from the most recent draft isn’t really helpful for our question. Therefore,it would be better to go back in time and use a draft year that has had some time to develop and reach their potential.\nHence, it will be better to use the 2018 data to achieve this purpose.\n\n\nCode\ndraft2018<-NHLDraft%>%\n  filter(draftyear==2018 & postdraft<6)\n\nggplot(draft2018, aes(x=round, y=NHLgames))+\n  geom_point()+\n  labs(\n    title = \"Number of games played by drafted players in different round picks\",\n    x = \"round\",\n    y = \"NHLgames\"\n  )\n\n\n\n\n\nIn addition to the problem of overplotting, we’ve got an additional issue here. We actually have two keys and one attribute. The attribute is NHLgames, and the keys are round and postdraft, but we are only using round.\nThere are options to explore here. A visualization that uses both keys could be made, or alternatively, summarize the data for one of the keys.\nThe figure before summarizes the data for the TOTAL number of NHL games played since being drafted.\n\n\nCode\ndrafttot2018<- draft2018%>%\n  group_by(playerId, round, overall, position, name)%>%\n  summarise(totgames=sum(NHLgames))\n\n\n`summarise()` has grouped output by 'playerId', 'round', 'overall', 'position'.\nYou can override using the `.groups` argument.\n\n\nCode\nggplot(drafttot2018, aes(x=round, y=totgames))+\n  geom_point()\n\n\n\n\n\nCode\nggplot(drafttot2018, aes(x=reorder(name,overall), y=totgames))+\n  geom_col(aes(fill=as.factor(round)))+\n  scale_x_discrete(labels = NULL)+\n  labs(\n    title = \"Total number of games played by drafted players\",\n    x = \"Overall draft position\",\n    y = \"Total games played\"\n  )\n\n\n\n\n\nOne of the best ways to deal with overplotting is to use our keys to SEPARATE and ORDER our data. Unlike in the scatterplots that had several overlaps that made it difficult to distinguish the variables in the data, the column chart above clearly shows the differences in the number of games players drafted in different rounds played using colour as an additional distinguishing factor."
+  },
+  {
+    "objectID": "posts/NHL draft analytics/index.html#stacked-bar-chart",
+    "href": "posts/NHL draft analytics/index.html#stacked-bar-chart",
+    "title": "ASSIGNMENT 5",
+    "section": "STACKED BAR CHART",
+    "text": "STACKED BAR CHART\nStacked bar charts use two keys and one value. Leveraging this idiom, both round and postdraft will be used as as the keys and NHLgames as the value…\nThe idea here is that we might be able to get a sense of the temporal pattern of NHL games after a player is drafted. This seeks to answer questions on whether first round picks join the NHL earlier and how long they stay in the NHL?\n\n\nCode\nggplot(NHLDraft, aes(x = postdraft, y=NHLgames, fill=as.factor(round)))+\n  geom_col(position = \"stack\")+\n  labs(\n    title = \"Player perfomance after being drafted\",\n    x = \"postdraft\",\n    y = \"NHLgames\"\n  )"
+  },
+  {
+    "objectID": "posts/NHL draft analytics/index.html#pie-charts-normalized-bar-charts",
+    "href": "posts/NHL draft analytics/index.html#pie-charts-normalized-bar-charts",
+    "title": "ASSIGNMENT 5",
+    "section": "PIE CHARTS / NORMALIZED BAR CHARTS",
+    "text": "PIE CHARTS / NORMALIZED BAR CHARTS\nWe all know that Pie Charts are rarely a good choice, but let’s look at how to make one here. I’ll eliminate all the players drafted in 2018 who never played an NHL game, leaving us 80 players drafted in that year who made “THE SHOW”. Let’s look at how those 80 players were drafted:\n\n\nCode\nplayedNHL2018 <- drafttot2018%>%\n  filter(totgames>0)\n\nggplot(playedNHL2018, aes(x = \"\", fill = factor(round))) +\n  geom_bar(width = 1) +\n  coord_polar(theta = \"y\")\n\n\n\n\n\nThis visualization is not great. In that, it is impossible to do a comparison between a player who has played hundreds of games in their first five years and one that has played one game in five years.\nConsidering the data type and size, a pie chart does not describe it adequately and thus makes it impossible to make good inferences of the variables from the visualization of which the relative value of second and third round picks are examples.\nLooking at the pie chart, it mainly talks describes size/ percentages. However, that is not the intended assessment being made hence making it inappropriate to use.\nI would say that at a glance the pie chart describes the number of players that were first round picks, second round picks, and so on. moreover, x and y axis of the pie chart illustrated above are redundant.\nChanging this to account for the various years post draft:\n\n\nCode\nseasonplayedNHL2018 <- draft2018%>%\n  filter(NHLgames>0)\n\n\nggplot(seasonplayedNHL2018, aes(x = \"\", fill = factor(round))) +\n  geom_bar(width = 1) +\n  coord_polar(theta = \"y\")+\n  facet_wrap(~postdraft)"
+  },
+  {
+    "objectID": "posts/NHL draft analytics/index.html#heatmap",
+    "href": "posts/NHL draft analytics/index.html#heatmap",
+    "title": "ASSIGNMENT 5",
+    "section": "HEATMAP?",
+    "text": "HEATMAP?\nCould this be useful?\n\n\nCode\nround1<-NHLDraft%>%\n  filter(round==1)\n\nggplot(round1, aes(y = reorder(name, overall), x = postdraft, fill = NHLgames)) +\n  geom_tile() +\n  scale_fill_gradient(low = \"blue\", high = \"red\")"
+  },
+  {
+    "objectID": "posts/NHL draft analytics/index.html#conclusion",
+    "href": "posts/NHL draft analytics/index.html#conclusion",
+    "title": "ASSIGNMENT 5",
+    "section": "CONCLUSION",
+    "text": "CONCLUSION\nBased on the visualizations, I would advise that trading a first-round pick for two second-round picks and one third-round pick, although dicey, could be likened to shooting yourself in the foot.\nIn as much as the performance of first round picks are unquestionable, it is obvious that given the chance, second and third round picks, may also perform well if they have more play time postdraft. Moreover, Therefore the team is better off with a good number of players who can produce results rather than depending on one person to make the team perform better."
+  },
+  {
     "objectID": "posts/post-with-code/RB-A2-Annotation.html",
     "href": "posts/post-with-code/RB-A2-Annotation.html",
     "title": "Assignment2",
@@ -67,7 +116,7 @@
     "href": "index.html",
     "title": "Ronald’s BCB504 Portfolio",
     "section": "",
-    "text": "Assignment 4\n\n\nMarks and Channels\n\n\n\n\nAssignment\n\n\nDataViz\n\n\n\n\nExploring variable combinations of marks and channels for BCB 504\n\n\n\n\n\n\nFeb 14, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment2\n\n\nBCB 504 - Foundations of Data Visualization\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment 3\n\n\nBCB 504 - Foundations of Data Visualization\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\nNo matching items"
+    "text": "Assignment 5\n\n\nVisualizations for Tabular Data\n\n\n\n\nAssignment\n\n\nDataViz\n\n\nTables\n\n\nScatterplot\n\n\nBarplot\n\n\nPiechart\n\n\n\n\nIs trading a first-round pick for two second-round picks and a third-round pick prudent?\n\n\n\n\n\n\nMar 7, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n  \n\n\n\n\nAssignment 4\n\n\nMarks and Channels\n\n\n\n\nAssignment\n\n\nDataViz\n\n\n\n\nExploring variable combinations of marks and channels for BCB 504\n\n\n\n\n\n\nFeb 14, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment2\n\n\nBCB 504 - Foundations of Data Visualization\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment 3\n\n\nBCB 504 - Foundations of Data Visualization\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJan 30, 2023\n\n\nRonald Bentil\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",

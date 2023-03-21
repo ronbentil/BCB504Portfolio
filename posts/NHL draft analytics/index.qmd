@@ -1,0 +1,174 @@
+---
+title: "Assignment 5"
+subtitle: "Visualizations for Tabular Data"
+author: "Ronald Bentil"
+date: "2023-03-07"
+categories: [Assignment, DataViz, Tables, Scatterplot, Barplot, Piechart]
+image: "Cthulhuhockeycard (1).png"
+code-fold: true
+code-tools: true
+description: "Is trading a first-round pick for two second-round picks and a third-round pick prudent?"
+---
+
+## OVERVIEW
+
+In this assignment, I am going to practice creating visualizations for tabular data.
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(readxl)
+
+NHLDraft<-read.csv("NHLDraft.csv")
+NHLDictionary<-read_excel("NHLDictionary.xlsx")
+
+knitr::kable(NHLDictionary)
+```
+
+In this case, we have a dataframe with all the NHL drafted players since 2000, their position, their draft year and position, and then rows for each season since being drafted (`postdraft`). The key variable here is `NHLgames`, which tells us how many games they played in the NHL each season since being drafted.
+
+The data dictionary above describes the items and attributes in the data.
+
+## SIMPLE SCATTERPLOT
+
+One thing to realize about professional hockey is that it is pretty rare for a player to play in the NHL right after being drafted. Players get drafted when they are 18 years old, and they usually play in the juniors, minor leagues, or the NCAA for a bit to further develop.
+
+Below is a scatter plot to visualize this phenomenon with the most recent draft classes.
+
+```{r}
+draft2022<-NHLDraft%>%
+  filter(draftyear==2022 & postdraft==0)
+
+ggplot(draft2022, aes(x=round, y=NHLgames))+
+  geom_point()
+
+```
+
+As observed, the players drafted in June of 2022 haven't played much this season. There are few things wrong with this visualization, however:
+
+1.  **Overplotting.** All those points on the y=0 line represent about 32 players each. Can you think of a way that adding extra channels might help?
+2.  **Labelling.** Can we create a solid figure caption and better axis labels for this figure? In your caption, please specify the task(s) the visualizaiton is intended to facilitate, as well as the marks, channels, and key-value pairs used.
+3.  **Key-Value pairs:** Looks like we are using "round" as a continuous variable. Can we change this to an ordered factor?
+
+## EXPANDED SCATTERPLOT
+
+The data from the most recent draft isn't really helpful for our question. Therefore,it would be better to go back in time and use a draft year that has had some time to develop and reach their potential.
+
+Hence, it will be better to use the 2018 data to achieve this purpose.
+
+```{r}
+draft2018<-NHLDraft%>%
+  filter(draftyear==2018 & postdraft<6)
+
+ggplot(draft2018, aes(x=round, y=NHLgames))+
+  geom_point()+
+  labs(
+    title = "Number of games played by drafted players in different round picks",
+    x = "round",
+    y = "NHLgames"
+  )
+
+```
+
+In addition to the problem of overplotting, we've got an additional issue here. We actually have two keys and one attribute. The attribute is `NHLgames`, and the keys are `round` and `postdraft`, but we are only using round.
+
+There are options to explore here. A visualization that uses both keys could be made, or alternatively, summarize the data for one of the keys.
+
+The figure before summarizes the data for the TOTAL number of NHL games played since being drafted.
+
+```{r}
+drafttot2018<- draft2018%>%
+  group_by(playerId, round, overall, position, name)%>%
+  summarise(totgames=sum(NHLgames))
+
+ggplot(drafttot2018, aes(x=round, y=totgames))+
+  geom_point()
+
+ggplot(drafttot2018, aes(x=reorder(name,overall), y=totgames))+
+  geom_col(aes(fill=as.factor(round)))+
+  scale_x_discrete(labels = NULL)+
+  labs(
+    title = "Total number of games played by drafted players",
+    x = "Overall draft position",
+    y = "Total games played"
+  )
+```
+
+One of the best ways to deal with overplotting is to use our keys to SEPARATE and ORDER our data. Unlike in the scatterplots that had several overlaps that made it difficult to distinguish the variables in the data, the column chart above clearly shows the differences in the number of games players drafted in different rounds played using colour as an additional distinguishing factor.
+
+## STACKED BAR CHART
+
+Stacked bar charts use two keys and one value. Leveraging this idiom, both `round` and `postdraft` will be used as as the keys and NHLgames as the value...
+
+The idea here is that we might be able to get a sense of the temporal pattern of NHL games after a player is drafted. This seeks to answer questions on whether first round picks join the NHL earlier and how long they stay in the NHL?
+
+```{r}
+ggplot(NHLDraft, aes(x = postdraft, y=NHLgames, fill=as.factor(round)))+
+  geom_col(position = "stack")+
+  labs(
+    title = "Player perfomance after being drafted",
+    x = "postdraft",
+    y = "NHLgames"
+  )
+```
+
+## PIE CHARTS / NORMALIZED BAR CHARTS
+
+We all know that Pie Charts are rarely a good choice, but let's look at how to make one here. I'll eliminate all the players drafted in 2018 who never played an NHL game, leaving us 80 players drafted in that year who made "THE SHOW". Let's look at how those 80 players were drafted:
+
+```{r}
+
+playedNHL2018 <- drafttot2018%>%
+  filter(totgames>0)
+
+ggplot(playedNHL2018, aes(x = "", fill = factor(round))) +
+  geom_bar(width = 1) +
+  coord_polar(theta = "y")
+
+
+```
+
+This visualization is not great. In that, it is impossible to do a comparison between a player who has played hundreds of games in their first five years and one that has played one game in five years.
+
+Considering the data type and size, a pie chart does not describe it adequately and thus makes it impossible to make good inferences of the variables from the visualization of which the relative value of second and third round picks are examples.
+
+Looking at the pie chart, it mainly talks describes size/ percentages. However, that is not the intended assessment being made hence making it inappropriate to use.
+
+I would say that at a glance the pie chart describes the number of players that were first round picks, second round picks, and so on. moreover, x and y axis of the pie chart illustrated above are redundant.
+
+Changing this to account for the various years post draft:
+
+```{r}
+seasonplayedNHL2018 <- draft2018%>%
+  filter(NHLgames>0)
+
+
+ggplot(seasonplayedNHL2018, aes(x = "", fill = factor(round))) +
+  geom_bar(width = 1) +
+  coord_polar(theta = "y")+
+  facet_wrap(~postdraft)
+
+```
+
+## HEATMAP?
+
+Could this be useful?
+
+```{r}
+
+round1<-NHLDraft%>%
+  filter(round==1)
+
+ggplot(round1, aes(y = reorder(name, overall), x = postdraft, fill = NHLgames)) +
+  geom_tile() +
+  scale_fill_gradient(low = "blue", high = "red")
+
+```
+
+## CONCLUSION
+
+Based on the visualizations, I would advise that trading a first-round pick for two second-round picks and one third-round pick, although dicey, could be likened to shooting yourself in the foot. 
+
+In as much as the performance of first round picks are unquestionable, it is obvious that given the chance, second and third round picks, may also perform well if they have more play time postdraft. Moreover, Therefore the team is better off with a good number of players who can produce results rather than depending on one person to make the team perform better.  
+
