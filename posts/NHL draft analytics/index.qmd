@@ -170,5 +170,5 @@ ggplot(round1, aes(y = reorder(name, overall), x = postdraft, fill = NHLgames)) 
 
 Based on the visualizations, I would advise that trading a first-round pick for two second-round picks and one third-round pick, although dicey, could be likened to shooting yourself in the foot. 
 
-In as much as the performance of first round picks are unquestionable, it is obvious that given the chance, second and third round picks, may also perform well if they have more play time postdraft. Moreover, Therefore the team is better off with a good number of players who can produce results rather than depending on one person to make the team perform better.  
+In as much as the performance of first round picks are unquestionable, it is obvious that given the chance, second and third round picks, may also perform well if they have more play time postdraft. Therefore the team is better off with a good number of players who can produce results rather than depending on one person to make the team perform better.  
 
