@@ -1,0 +1,11 @@
+---
+title: "BCB 520- Midterm Portfolio Post"
+subtitle: "Profiling NHL draft picks"
+author: "Ronald Bentil"
+date: "2023-03-25"
+categories: [Data, Visualizations]
+image: "NHL Image.jpeg"
+code-fold: true
+code-tools: true
+description: "Do teams really need these players and are they worth having?"
+---
