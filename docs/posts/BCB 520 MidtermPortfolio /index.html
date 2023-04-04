@@ -357,7 +357,7 @@ Median                                                   4.000000
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_85_99, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_85_99, <span class="at">main =</span> <span class="st">"Incidents that have occured between 1985-1999"</span>, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of incidents in 1985 to 1999"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -366,7 +366,7 @@ Median                                                   4.000000
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_00_14, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_00_14, <span class="at">main =</span> <span class="st">"Incidents that have occured between 2000-2014"</span>, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of incidents in 2000 to 2014"</span>,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -409,8 +409,8 @@ Max                                                                 14.000000
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>selected_85_99 <span class="ot">=</span> airlinesafety<span class="sc">$</span>incidents_85_99 <span class="sc">&gt;=</span> <span class="dv">15</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_85_99 <span class="sc">~</span> airline, <span class="at">data =</span> airlinesafety[selected_85_99,],</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_85_99 <span class="sc">~</span> airline, <span class="at">main=</span><span class="st">"Fatal accidents that have occured between 1985-1999"</span>, <span class="at">data =</span> airlinesafety[selected_85_99, ],  </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>, </span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Airline"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Number of fatal accidents (1985-1999)"</span>,</span>
@@ -429,7 +429,7 @@ Max                                                                 14.000000
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>selected_00_14 <span class="ot">=</span> airlinesafety<span class="sc">$</span>incidents_00_14 <span class="sc">&gt;=</span> <span class="dv">15</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_00_14 <span class="sc">~</span> airline, <span class="at">data =</span> airlinesafety[selected_00_14,],</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_00_14 <span class="sc">~</span> airline, <span class="at">main=</span><span class="st">"Fatal accidents that have occured between 2000-2014"</span>, <span class="at">data =</span> airlinesafety[selected_00_14,],</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Airline"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,</span>
@@ -700,10 +700,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">% of airlines with more than incident in 15 years</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">c</span>(<span class="fu">mean</span>(airlinesafety<span class="sc">$</span>incidents_00_14 <span class="sc">&gt;</span> <span class="dv">1</span>), <span class="fu">mean</span>(airlinesafety<span class="sc">$</span>incidents_85_99 <span class="sc">&gt;</span> <span class="dv">1</span>)))</span>
 <span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>SumIncidents</span>
 <span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_85_99, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_85_99, <span class="at">main =</span> <span class="st">"Incidents that have occured between 1985-1999"</span>, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of incidents in 1985 to 1999"</span>,</span>
 <span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
-<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_00_14, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_00_14, <span class="at">main =</span> <span class="st">"Incidents that have occured between 2000-2014"</span>, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of incidents in 2000 to 2014"</span>,</span>
 <span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
 <span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a></span>
@@ -724,8 +724,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>With this information, I sought to know the airlines with much with on average one incident per year or more in the period 1985-1999 as well as the period 2000-2014</span>
 <span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a>selected_85_99 <span class="ot">=</span> airlinesafety<span class="sc">$</span>incidents_85_99 <span class="sc">&gt;=</span> <span class="dv">15</span></span>
-<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_85_99 <span class="sc">~</span> airline, <span class="at">data =</span> airlinesafety[selected_85_99,],</span>
-<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
+<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_85_99 <span class="sc">~</span> airline, <span class="at">main=</span><span class="st">"Fatal accidents that have occured between 1985-1999"</span>, <span class="at">data =</span> airlinesafety[selected_85_99, ],  </span>
+<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>, </span>
 <span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Airline"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
 <span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,</span>
 <span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Number of fatal accidents (1985-1999)"</span>,</span>
@@ -739,7 +739,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a>selected_00_14 <span class="ot">=</span> airlinesafety<span class="sc">$</span>incidents_00_14 <span class="sc">&gt;=</span> <span class="dv">15</span></span>
-<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_00_14 <span class="sc">~</span> airline, <span class="at">data =</span> airlinesafety[selected_00_14,],</span>
+<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_00_14 <span class="sc">~</span> airline, <span class="at">main=</span><span class="st">"Fatal accidents that have occured between 2000-2014"</span>, <span class="at">data =</span> airlinesafety[selected_00_14,],</span>
 <span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
 <span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Airline"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
 <span id="cb14-115"><a href="#cb14-115" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,</span>

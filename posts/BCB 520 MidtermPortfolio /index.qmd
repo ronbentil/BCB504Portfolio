@@ -58,10 +58,10 @@ SumIncidents = rbind(Average = colMeans(airlinesafety[c("incidents_00_14", "inci
       `% of airlines with more than incident in 15 years` = 100*c(mean(airlinesafety$incidents_00_14 > 1), mean(airlinesafety$incidents_85_99 > 1)))
 SumIncidents
 
-hist(airlinesafety$incidents_85_99, freq = TRUE,
+hist(airlinesafety$incidents_85_99, main = "Incidents that have occured between 1985-1999", freq = TRUE,
      xlab = "Number of incidents in 1985 to 1999",
      ylab = "Frequency", ylim = c(0, 50))
-hist(airlinesafety$incidents_00_14, freq = TRUE,
+hist(airlinesafety$incidents_00_14, main = "Incidents that have occured between 2000-2014", freq = TRUE,
      xlab = "Number of incidents in 2000 to 2014",
      ylab = "Frequency", ylim = c(0, 50))
 
@@ -82,8 +82,8 @@ SumFatal_accidents
 With this information, I sought to know the airlines with much with on average one incident per year or more in the period 1985-1999 as well as the period 2000-2014
 ```{r}
 selected_85_99 = airlinesafety$incidents_85_99 >= 15
-barplot(formula = fatal_accidents_85_99 ~ airline, data = airlinesafety[selected_85_99,],
-        horiz = FALSE, cex.axis = 1,
+barplot(formula = fatal_accidents_85_99 ~ airline, main="Fatal accidents that have occured between 1985-1999", data = airlinesafety[selected_85_99, ],  
+        horiz = FALSE, cex.axis = 1, 
         xlab = "Airline", xaxt = "n",
         las = 2,
         ylab = "Number of fatal accidents (1985-1999)",
@@ -97,7 +97,7 @@ text(seq(1.5, end_point, by = 2),
 
 ```{r}
 selected_00_14 = airlinesafety$incidents_00_14 >= 15
-barplot(formula = fatal_accidents_00_14 ~ airline, data = airlinesafety[selected_00_14,],
+barplot(formula = fatal_accidents_00_14 ~ airline, main="Fatal accidents that have occured between 2000-2014", data = airlinesafety[selected_00_14,],
         horiz = FALSE, cex.axis = 1,
         xlab = "Airline", xaxt = "n",
         las = 2,
