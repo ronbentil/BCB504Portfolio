@@ -259,7 +259,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 6              337</code></pre>
 </div>
 </div>
-<p>Below is the data dictionary:</p>
+<p>Below is the data dictionary that defines attributes in the data:</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -280,10 +280,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>datadictionary <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">'airlinesafetydatadictionary.xlsx'</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>airlinesafety_attributes <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"airlinesafetydatadictionary.xlsx"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(airlinesafety_attributes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Header</th>
+<th style="text-align: left;">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">airline</td>
+<td style="text-align: left;">Airline</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">avail_seat_km_per_week</td>
+<td style="text-align: left;">Available seat kilometers flown every week</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">incidents_85_99</td>
+<td style="text-align: left;">Total number of incidents, 1985–1999</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fatal_accidents_85_99</td>
+<td style="text-align: left;">Total number of fatal accidents, 1985–1999</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fatalities_85_99</td>
+<td style="text-align: left;">Total number of fatalities, 1985–1999</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">incidents_00_14</td>
+<td style="text-align: left;">Total number of incidents, 2000–2014</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fatal_accidents_00_14</td>
+<td style="text-align: left;">Total number of fatal accidents, 2000–2014</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fatalities_00_14</td>
+<td style="text-align: left;">Total number of fatalities, 2000–2014</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </section>
 <section id="visualizations" class="level2">
@@ -329,7 +374,7 @@ Median                                                   4.000000
 <p><img src="index_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Further, i went on to generate averages and standard deviations of the number of fatal accidents for the same periods (1985-1999 and 2000-2014)</p>
+<p>Further, I went on to generate averages and standard deviations of the number of fatal accidents for the same periods (1985-1999 and 2000-2014)</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -403,7 +448,7 @@ Max                                                                 14.000000
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">CONCLUSIONS</h2>
-<p>I cant exactly infer from the descriptive statistics which airline is the safest for travel. However, from the visualizations, it is clear that there has been and continues to be significant reduction in the number of incidences and fatal accidents. A great indication that there is robust improvement in the services and technology over the years and airlines are doing the utmost best to allay passenger fears, and get them to their destinations safely. The choice though, is totally a matter of preference!</p>
+<p>I cant exactly infer from the descriptive statistics which airline is the safest for travel. However, from the visualizations, it is clear that there has been and continues to be significant reduction in the number of incidences and fatal accidents. A great indication that there is robust improvement in the services and technology over the years and airlines are doing their utmost best to allay passenger fears, and get them to their destinations safely. The choice though, would totally be a matter of preference!</p>
 
 
 <!-- -->
@@ -631,20 +676,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>airlinesafety<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">'Airline safety datset.csv'</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airlinesafety)</span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(airlinesafety)</span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>Below is the data dictionary that defines attributes in the data:</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>Below is the data dictionary that defines attributes in the data:</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>airlinesafety_attributes <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"airlinesafetydatadictionary.xlsx"</span>)</span>
-<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(airlinesafety_attributes)</span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>airlinesafety_attributes <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"airlinesafetydatadictionary.xlsx"</span>)</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(airlinesafety_attributes)</span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## VISUALIZATIONS</span></span>
 <span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>Below, I generated the averages and standard deviations of the number of incidents per periods (1985-1999 and 2000-2014)</span>
