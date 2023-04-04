@@ -34,16 +34,20 @@ A data dictionary has  been added to provide definitions for the various headers
 ```{r}
 airlinesafety=read.csv('Airline safety datset.csv', header = TRUE)
 head(airlinesafety)
+glimpse(airlinesafety)
+
 ```
 
-Below is the data dictionary:
+Below is the data dictionary that defines attributes in the data:
 ```{r}
 library(tidyverse)
 library(readxl)
-
-datadictionary <- read_excel('airlinesafetydatadictionary.xlsx')
 library(dplyr)
+airlinesafety_attributes <- read_xlsx("airlinesafetydatadictionary.xlsx")
+knitr::kable(airlinesafety_attributes)
+
 ```
+
 ## VISUALIZATIONS
 
 Below, I generated the averages and standard deviations of the number of incidents per periods (1985-1999 and 2000-2014)
@@ -64,7 +68,7 @@ hist(airlinesafety$incidents_00_14, freq = TRUE,
 ```
 
 
-Further, i went on to generate averages and standard deviations of the number of fatal accidents for the same periods (1985-1999 and 2000-2014)
+Further, I went on to generate averages and standard deviations of the number of fatal accidents for the same periods (1985-1999 and 2000-2014)
 ```{r}
 SumFatal_accidents = apply(airlinesafety[c("fatal_accidents_00_14", "fatal_accidents_85_99")], MARGIN = 2, FUN = function(x) {
   c(Average = mean(x), SD = sd(x), quantile(x, probs = c(.25, .5, .75, 1)), 100*mean(x > 1))

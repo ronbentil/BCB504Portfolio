@@ -631,80 +631,84 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>airlinesafety<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">'Airline safety datset.csv'</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airlinesafety)</span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(airlinesafety)</span>
 <span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>Below is the data dictionary:</span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>datadictionary <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">'airlinesafetydatadictionary.xlsx'</span>)</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>Below is the data dictionary that defines attributes in the data:</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## VISUALIZATIONS</span></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>airlinesafety_attributes <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"airlinesafetydatadictionary.xlsx"</span>)</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(airlinesafety_attributes)</span>
 <span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>Below, I generated the averages and standard deviations of the number of incidents per periods (1985-1999 and 2000-2014)</span>
-<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>SumIncidents <span class="ot">=</span> <span class="fu">rbind</span>(<span class="at">Average =</span> <span class="fu">colMeans</span>(airlinesafety[<span class="fu">c</span>(<span class="st">"incidents_00_14"</span>, <span class="st">"incidents_85_99"</span>)]),</span>
-<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Standard deviation</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">apply</span>(airlinesafety[<span class="fu">c</span>(<span class="st">"incidents_00_14"</span>, <span class="st">"incidents_85_99"</span>)], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> sd),</span>
-<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>      <span class="at">Median =</span> <span class="fu">apply</span>(airlinesafety[<span class="fu">c</span>(<span class="st">"incidents_00_14"</span>, <span class="st">"incidents_85_99"</span>)], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> median),</span>
-<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">% of airlines with more than incident in 15 years</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">c</span>(<span class="fu">mean</span>(airlinesafety<span class="sc">$</span>incidents_00_14 <span class="sc">&gt;</span> <span class="dv">1</span>), <span class="fu">mean</span>(airlinesafety<span class="sc">$</span>incidents_85_99 <span class="sc">&gt;</span> <span class="dv">1</span>)))</span>
-<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>SumIncidents</span>
-<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_85_99, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of incidents in 1985 to 1999"</span>,</span>
-<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
-<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_00_14, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of incidents in 2000 to 2014"</span>,</span>
-<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
-<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a>Further, i went on to generate averages and standard deviations of the number of fatal accidents for the same periods (1985-1999 and 2000-2014)</span>
-<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a>SumFatal_accidents <span class="ot">=</span> <span class="fu">apply</span>(airlinesafety[<span class="fu">c</span>(<span class="st">"fatal_accidents_00_14"</span>, <span class="st">"fatal_accidents_85_99"</span>)], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">Average =</span> <span class="fu">mean</span>(x), <span class="at">SD =</span> <span class="fu">sd</span>(x), <span class="fu">quantile</span>(x, <span class="at">probs =</span> <span class="fu">c</span>(.<span class="dv">25</span>, .<span class="dv">5</span>, .<span class="dv">75</span>, <span class="dv">1</span>)), <span class="dv">100</span><span class="sc">*</span><span class="fu">mean</span>(x <span class="sc">&gt;</span> <span class="dv">1</span>))</span>
-<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(SumFatal_accidents) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Average"</span>, <span class="st">"Standard deviation"</span>, <span class="st">"Q1 (&lt;25%)"</span>, <span class="st">"Median"</span>, <span class="st">"Q3 (&lt;75%)"</span>, <span class="st">"Max"</span>,</span>
-<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"% of airlines with more than fatal accident in 15 years"</span>)</span>
-<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a>SumFatal_accidents</span>
-<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-85"><a href="#cb14-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-86"><a href="#cb14-86" aria-hidden="true" tabindex="-1"></a>With this information, I sought to know the airlines with much with on average one incident per year or more in the period 1985-1999 as well as the period 2000-2014</span>
-<span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>selected_85_99 <span class="ot">=</span> airlinesafety<span class="sc">$</span>incidents_85_99 <span class="sc">&gt;=</span> <span class="dv">15</span></span>
-<span id="cb14-91"><a href="#cb14-91" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_85_99 <span class="sc">~</span> airline, <span class="at">data =</span> airlinesafety[selected_85_99,],</span>
-<span id="cb14-92"><a href="#cb14-92" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
-<span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Airline"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
-<span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,</span>
-<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Number of fatal accidents (1985-1999)"</span>,</span>
-<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>        <span class="at">space =</span> <span class="dv">1</span>)</span>
-<span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a>end_point <span class="ot">=</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">NROW</span>(airlinesafety) <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">seq</span>(<span class="fl">1.5</span>, end_point, <span class="at">by =</span> <span class="dv">2</span>),</span>
-<span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a>     <span class="fu">par</span>(<span class="st">"usr"</span>)[<span class="dv">3</span>]<span class="sc">-</span><span class="fl">0.25</span>,</span>
-<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a>     <span class="at">srt =</span> <span class="dv">30</span>, <span class="at">adj =</span> <span class="dv">1</span>, <span class="at">xpd =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> airlinesafety[selected_85_99,]<span class="sc">$</span>airline, <span class="at">cex =</span> <span class="fl">0.65</span>)</span>
-<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-106"><a href="#cb14-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a>selected_00_14 <span class="ot">=</span> airlinesafety<span class="sc">$</span>incidents_00_14 <span class="sc">&gt;=</span> <span class="dv">15</span></span>
-<span id="cb14-108"><a href="#cb14-108" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_00_14 <span class="sc">~</span> airline, <span class="at">data =</span> airlinesafety[selected_00_14,],</span>
-<span id="cb14-109"><a href="#cb14-109" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
-<span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Airline"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
-<span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,</span>
-<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Number of fatal accidents (2000-2014)"</span>,</span>
-<span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a>        <span class="at">space =</span> <span class="dv">1</span>)</span>
-<span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a>end_point <span class="ot">=</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">NROW</span>(airlinesafety) <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb14-115"><a href="#cb14-115" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">seq</span>(<span class="fl">1.5</span>, end_point, <span class="at">by =</span> <span class="dv">2</span>),</span>
-<span id="cb14-116"><a href="#cb14-116" aria-hidden="true" tabindex="-1"></a>     <span class="fu">par</span>(<span class="st">"usr"</span>)[<span class="dv">3</span>]<span class="sc">-</span><span class="fl">0.25</span>,</span>
-<span id="cb14-117"><a href="#cb14-117" aria-hidden="true" tabindex="-1"></a>     <span class="at">srt =</span> <span class="dv">30</span>, <span class="at">adj =</span> <span class="dv">1</span>, <span class="at">xpd =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb14-118"><a href="#cb14-118" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> airlinesafety[selected_00_14,]<span class="sc">$</span>airline, <span class="at">cex =</span> <span class="fl">0.65</span>)</span>
-<span id="cb14-119"><a href="#cb14-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-120"><a href="#cb14-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-121"><a href="#cb14-121" aria-hidden="true" tabindex="-1"></a><span class="fu">## CONCLUSIONS</span></span>
-<span id="cb14-122"><a href="#cb14-122" aria-hidden="true" tabindex="-1"></a>I cant exactly infer from the descriptive statistics which airline is the safest for travel. However, from the visualizations, it is clear that there has been and continues to be significant reduction in the number of incidences and fatal accidents. A great indication that there is robust improvement in the services and technology over the years and airlines are doing their utmost best to allay passenger fears, and get them to their destinations safely. The choice though, would totally be a matter of preference! </span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## VISUALIZATIONS</span></span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>Below, I generated the averages and standard deviations of the number of incidents per periods (1985-1999 and 2000-2014)</span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>SumIncidents <span class="ot">=</span> <span class="fu">rbind</span>(<span class="at">Average =</span> <span class="fu">colMeans</span>(airlinesafety[<span class="fu">c</span>(<span class="st">"incidents_00_14"</span>, <span class="st">"incidents_85_99"</span>)]),</span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Standard deviation</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">apply</span>(airlinesafety[<span class="fu">c</span>(<span class="st">"incidents_00_14"</span>, <span class="st">"incidents_85_99"</span>)], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> sd),</span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>      <span class="at">Median =</span> <span class="fu">apply</span>(airlinesafety[<span class="fu">c</span>(<span class="st">"incidents_00_14"</span>, <span class="st">"incidents_85_99"</span>)], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> median),</span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">% of airlines with more than incident in 15 years</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">c</span>(<span class="fu">mean</span>(airlinesafety<span class="sc">$</span>incidents_00_14 <span class="sc">&gt;</span> <span class="dv">1</span>), <span class="fu">mean</span>(airlinesafety<span class="sc">$</span>incidents_85_99 <span class="sc">&gt;</span> <span class="dv">1</span>)))</span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>SumIncidents</span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_85_99, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of incidents in 1985 to 1999"</span>,</span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airlinesafety<span class="sc">$</span>incidents_00_14, <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of incidents in 2000 to 2014"</span>,</span>
+<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
+<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a>Further, I went on to generate averages and standard deviations of the number of fatal accidents for the same periods (1985-1999 and 2000-2014)</span>
+<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a>SumFatal_accidents <span class="ot">=</span> <span class="fu">apply</span>(airlinesafety[<span class="fu">c</span>(<span class="st">"fatal_accidents_00_14"</span>, <span class="st">"fatal_accidents_85_99"</span>)], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">Average =</span> <span class="fu">mean</span>(x), <span class="at">SD =</span> <span class="fu">sd</span>(x), <span class="fu">quantile</span>(x, <span class="at">probs =</span> <span class="fu">c</span>(.<span class="dv">25</span>, .<span class="dv">5</span>, .<span class="dv">75</span>, <span class="dv">1</span>)), <span class="dv">100</span><span class="sc">*</span><span class="fu">mean</span>(x <span class="sc">&gt;</span> <span class="dv">1</span>))</span>
+<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(SumFatal_accidents) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Average"</span>, <span class="st">"Standard deviation"</span>, <span class="st">"Q1 (&lt;25%)"</span>, <span class="st">"Median"</span>, <span class="st">"Q3 (&lt;75%)"</span>, <span class="st">"Max"</span>,</span>
+<span id="cb14-85"><a href="#cb14-85" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"% of airlines with more than fatal accident in 15 years"</span>)</span>
+<span id="cb14-86"><a href="#cb14-86" aria-hidden="true" tabindex="-1"></a>SumFatal_accidents</span>
+<span id="cb14-87"><a href="#cb14-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-88"><a href="#cb14-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>With this information, I sought to know the airlines with much with on average one incident per year or more in the period 1985-1999 as well as the period 2000-2014</span>
+<span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a>selected_85_99 <span class="ot">=</span> airlinesafety<span class="sc">$</span>incidents_85_99 <span class="sc">&gt;=</span> <span class="dv">15</span></span>
+<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_85_99 <span class="sc">~</span> airline, <span class="at">data =</span> airlinesafety[selected_85_99,],</span>
+<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
+<span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Airline"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
+<span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,</span>
+<span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Number of fatal accidents (1985-1999)"</span>,</span>
+<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a>        <span class="at">space =</span> <span class="dv">1</span>)</span>
+<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a>end_point <span class="ot">=</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">NROW</span>(airlinesafety) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">seq</span>(<span class="fl">1.5</span>, end_point, <span class="at">by =</span> <span class="dv">2</span>),</span>
+<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a>     <span class="fu">par</span>(<span class="st">"usr"</span>)[<span class="dv">3</span>]<span class="sc">-</span><span class="fl">0.25</span>,</span>
+<span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a>     <span class="at">srt =</span> <span class="dv">30</span>, <span class="at">adj =</span> <span class="dv">1</span>, <span class="at">xpd =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> airlinesafety[selected_85_99,]<span class="sc">$</span>airline, <span class="at">cex =</span> <span class="fl">0.65</span>)</span>
+<span id="cb14-106"><a href="#cb14-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a>selected_00_14 <span class="ot">=</span> airlinesafety<span class="sc">$</span>incidents_00_14 <span class="sc">&gt;=</span> <span class="dv">15</span></span>
+<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="at">formula =</span> fatal_accidents_00_14 <span class="sc">~</span> airline, <span class="at">data =</span> airlinesafety[selected_00_14,],</span>
+<span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a>        <span class="at">horiz =</span> <span class="cn">FALSE</span>, <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
+<span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Airline"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
+<span id="cb14-115"><a href="#cb14-115" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,</span>
+<span id="cb14-116"><a href="#cb14-116" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Number of fatal accidents (2000-2014)"</span>,</span>
+<span id="cb14-117"><a href="#cb14-117" aria-hidden="true" tabindex="-1"></a>        <span class="at">space =</span> <span class="dv">1</span>)</span>
+<span id="cb14-118"><a href="#cb14-118" aria-hidden="true" tabindex="-1"></a>end_point <span class="ot">=</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">NROW</span>(airlinesafety) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb14-119"><a href="#cb14-119" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">seq</span>(<span class="fl">1.5</span>, end_point, <span class="at">by =</span> <span class="dv">2</span>),</span>
+<span id="cb14-120"><a href="#cb14-120" aria-hidden="true" tabindex="-1"></a>     <span class="fu">par</span>(<span class="st">"usr"</span>)[<span class="dv">3</span>]<span class="sc">-</span><span class="fl">0.25</span>,</span>
+<span id="cb14-121"><a href="#cb14-121" aria-hidden="true" tabindex="-1"></a>     <span class="at">srt =</span> <span class="dv">30</span>, <span class="at">adj =</span> <span class="dv">1</span>, <span class="at">xpd =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-122"><a href="#cb14-122" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> airlinesafety[selected_00_14,]<span class="sc">$</span>airline, <span class="at">cex =</span> <span class="fl">0.65</span>)</span>
+<span id="cb14-123"><a href="#cb14-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-124"><a href="#cb14-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-125"><a href="#cb14-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## CONCLUSIONS</span></span>
+<span id="cb14-126"><a href="#cb14-126" aria-hidden="true" tabindex="-1"></a>I cant exactly infer from the descriptive statistics which airline is the safest for travel. However, from the visualizations, it is clear that there has been and continues to be significant reduction in the number of incidences and fatal accidents. A great indication that there is robust improvement in the services and technology over the years and airlines are doing their utmost best to allay passenger fears, and get them to their destinations safely. The choice though, would totally be a matter of preference! </span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
