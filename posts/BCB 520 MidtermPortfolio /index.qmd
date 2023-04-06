@@ -33,7 +33,10 @@ A data dictionary has  been added to provide definitions for the various headers
 
 ```{r}
 airlinesafety=read.csv('Airline safety datset.csv', header = TRUE)
-head(airlinesafety)
+
+library(knitr)
+kable(airlinesafety)
+
 
 ```
 
@@ -50,65 +53,110 @@ knitr::kable(airlinesafety_attributes)
 ```
 ## VISUALIZATIONS
 
-Below, I generated the averages and standard deviations of the number of incidents per periods (1985-1999 and 2000-2014)
-```{r}
-SumIncidents = rbind(Average = colMeans(airlinesafety[c("incidents_00_14", "incidents_85_99")]),
-      `Standard deviation` = apply(airlinesafety[c("incidents_00_14", "incidents_85_99")], MARGIN = 2, FUN = sd),
-      Median = apply(airlinesafety[c("incidents_00_14", "incidents_85_99")], MARGIN = 2, FUN = median),
-      `% of airlines with more than incident in 15 years` = 100*c(mean(airlinesafety$incidents_00_14 > 1), mean(airlinesafety$incidents_85_99 > 1)))
-SumIncidents
-
-hist(airlinesafety$incidents_85_99, main = "Incidents that have occured between 1985-1999", freq = TRUE,
-     xlab = "Number of incidents in 1985 to 1999",
-     ylab = "Frequency", ylim = c(0, 50))
-hist(airlinesafety$incidents_00_14, main = "Incidents that have occured between 2000-2014", freq = TRUE,
-     xlab = "Number of incidents in 2000 to 2014",
-     ylab = "Frequency", ylim = c(0, 50))
-
-```
-
-
 Further, I went on to generate averages and standard deviations of the number of fatal accidents for the same periods (1985-1999 and 2000-2014)
 ```{r}
+library(knitr)
+
 SumFatal_accidents = apply(airlinesafety[c("fatal_accidents_00_14", "fatal_accidents_85_99")], MARGIN = 2, FUN = function(x) {
   c(Average = mean(x), SD = sd(x), quantile(x, probs = c(.25, .5, .75, 1)), 100*mean(x > 1))
 })
 rownames(SumFatal_accidents) = c("Average", "Standard deviation", "Q1 (<25%)", "Median", "Q3 (<75%)", "Max",
                                  "% of airlines with more than fatal accident in 15 years")
-SumFatal_accidents
-```
 
-
-With this information, I sought to know the airlines with much with on average one incident per year or more in the period 1985-1999 as well as the period 2000-2014
-```{r}
-selected_85_99 = airlinesafety$incidents_85_99 >= 15
-barplot(formula = fatal_accidents_85_99 ~ airline, main="Fatal accidents that have occured between 1985-1999", data = airlinesafety[selected_85_99, ],  
-        horiz = FALSE, cex.axis = 1, 
-        xlab = "Airline", xaxt = "n",
-        las = 2,
-        ylab = "Number of fatal accidents (1985-1999)",
-        space = 1)
-end_point = 0.5 + 2*NROW(airlinesafety) - 1
-text(seq(1.5, end_point, by = 2),
-     par("usr")[3]-0.25,
-     srt = 30, adj = 1, xpd = TRUE,
-     labels = airlinesafety[selected_85_99,]$airline, cex = 0.65)
+kable(SumFatal_accidents, align = "c", caption = "Summary of Fatal Accidents")
 ```
 
 ```{r}
-selected_00_14 = airlinesafety$incidents_00_14 >= 15
-barplot(formula = fatal_accidents_00_14 ~ airline, main="Fatal accidents that have occured between 2000-2014", data = airlinesafety[selected_00_14,],
-        horiz = FALSE, cex.axis = 1,
-        xlab = "Airline", xaxt = "n",
-        las = 2,
-        ylab = "Number of fatal accidents (2000-2014)",
-        space = 1)
-end_point = 0.5 + 2*NROW(airlinesafety) - 1
-text(seq(1.5, end_point, by = 2),
-     par("usr")[3]-0.25,
-     srt = 30, adj = 1, xpd = TRUE,
-     labels = airlinesafety[selected_00_14,]$airline, cex = 0.65)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+
+
+
+airlinesafety <- read.csv("Airline safety datset.csv")
+
+
+airlines_fatal <- airlinesafety %>%
+  filter(fatal_accidents_85_99 + fatal_accidents_00_14 > 1)
+
+
+fatal_data <- data.frame(Airline = airlines_fatal$airline,
+                         Fatal_85_99 = airlines_fatal$fatal_accidents_85_99,
+                         Fatal_00_14 = airlines_fatal$fatal_accidents_00_14)
+
+
+fatal_data_melt <- melt(fatal_data, id.vars = "Airline")
+
+
+ggplot(fatal_data_melt, aes(x = Airline, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Airlines with more than one Fatal Accidents",
+       x = "Airline",
+       y = "Number of Fatal Accidents") +
+  scale_fill_manual(name = "Time Period",
+                    values = c("#F8766D", "#00BA38"),
+                    labels = c("1985-1999", "2000-2014")) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+
+```
+
+
+
+
+```{r}
+library(ggplot2)
+
+
+departures <- airlinesafety %>%
+  group_by(airline) %>%
+  summarise(total_departures = sum(avail_seat_km_per_week))
+
+
+fatal_data <- airlinesafety %>%
+  filter(fatal_accidents_85_99 + fatal_accidents_00_14 > 1) %>%
+  mutate(total_fatalities = fatal_accidents_85_99 + fatal_accidents_00_14) %>%
+  select(airline, total_fatalities) %>%
+  inner_join(departures, by = "airline")
+
+ggplot(fatal_data, aes(x = total_departures, y = total_fatalities)) +
+  geom_point() +
+  labs(title = "Fatal Accidents vs. Departures",
+       x = "Total Departures",
+       y = "Total Fatal Accidents")
+
+
+```
+
+```{r}
+
+correlation <- cor.test(fatal_data$total_departures, fatal_data$total_fatalities)
+
+
+cat("Correlation Coefficient:", correlation$estimate, "\n")
+cat("p-value:", correlation$p.value, "\n")
+
+library(dplyr)
+
+
+correlation <- cor.test(fatal_data$total_departures, fatal_data$total_fatalities)
+
+
+results_df <- data.frame(
+  "Variable 1" = "Total Departures",
+  "Variable 2" = "Total Fatalities",
+  "Correlation Coefficient" = correlation$estimate,
+  "p-value" = correlation$p.value
+)
+
+
+results_df %>%
+  kable()
+
 ```
 
 ## CONCLUSIONS
 I cant exactly infer from the descriptive statistics which airline is the safest for travel. However, from the visualizations, it is clear that there has been and continues to be significant reduction in the number of incidences and fatal accidents. A great indication that there is robust improvement in the services and technology over the years and airlines are doing their utmost best to allay passenger fears, and get them to their destinations safely. The choice though, would totally be a matter of preference! 
+
+
+
