@@ -15,40 +15,49 @@ description: "Ascertaining improvement in airline business to guarantee passenge
 This is a post that will be my Midterm assignment, testing my knowledge and skills acquired in/on Data visualization thus far. 
 
 ## PREAMBLE
-Travel is one thing people all over the world share in common usually for family, business or pleasure; be it local or international. Among the many modes of travel, the fastest and most convenient especially for longer distances is the airplane. However, in spite of the many contingencies put in place, the plane remains a machine which is prone to faults and unforeseen circumstances regardless of the efforts put in place.
+Travel is one thing people all over the world share in common usually for family, business or pleasure; be it local or international. Among the many modes of travel, the fastest and most convenient especially for longer distances is the airplane. However, in spite of the many contingencies put in place, the plane remains a machine which is prone to faults and unforeseen circumstances regardless of the efforts.
 
-In this assignment, I will analyze data incidents and number of fatal accidents for associated with each airline for about 30 years and attempt to make  certain conclusions.
+In this assignment, I will analyze data on the number of fatal accidents associated with each airline for about 30 years (1985-1999 and 2000-2014 periods) and attempt to make  certain inferences from that.
+
+
+
 
 Criteria for choice of parameters used in assessment:
-
-The data set had several airlines so airlines with on average one incident per year or more in the period 1985-1999 and 2000-2014 were selected for analysis. 
+The data set had several airlines so airlines with  more than one fatal accident within the period were selected for analysis. 
 
 ## DATA
-The data set I will be using for my visualizations is an already existent data set package in R. 
+The data set (Table 1) I will be using for my analyses and visualizations is  already existent in R studio as package. 
 Source:
 [Aviation Safety Network](https://r-data.pmagunia.com/dataset/airline-safety).
 
 
-A data dictionary has  been added to provide definitions for the various headers in the data set. 
-
 ```{r}
+
 airlinesafety=read.csv('Airline safety datset.csv', header = TRUE)
 
 library(knitr)
-kable(airlinesafety)
+library(kableExtra)
 
+kable(airlinesafety, caption = "Table 1: Airline Safety Data") %>%
+  kable_styling()
 
 ```
 
-Below is the data dictionary that defines attributes in the data:
+A data dictionary has  been added to provide definitions for the various headers in the data set. 
+Table 2 below is the data dictionary that defines attributes in the data:
 
 ```{r}
+
 library(tidyverse)
 library(readxl)
 library(dplyr)
+library(kableExtra)
+
+
 
 airlinesafety_attributes <- read_xlsx("airlinesafetydatadictionary.xlsx")
-knitr::kable(airlinesafety_attributes)
+knitr::kable(airlinesafety_attributes, caption = "Table 2: Airline Safety Data Dictionary") %>%
+  kable_styling()
 
 ```
 ## VISUALIZATIONS
@@ -61,11 +70,12 @@ SumFatal_accidents = apply(airlinesafety[c("fatal_accidents_00_14", "fatal_accid
   c(Average = mean(x), SD = sd(x), quantile(x, probs = c(.25, .5, .75, 1)), 100*mean(x > 1))
 })
 rownames(SumFatal_accidents) = c("Average", "Standard deviation", "Q1 (<25%)", "Median", "Q3 (<75%)", "Max",
-                                 "% of airlines with more than fatal accident in 15 years")
+                                 "Percentage of airlines with more than one fatal accident")
 
-kable(SumFatal_accidents, align = "c", caption = "Summary of Fatal Accidents")
+kable(SumFatal_accidents, align = "c", caption = "Table 3: Summary of fatal accidents") %>%
+  kable_styling()
 ```
-
+In addition to the above analysis, I thought it would be important to make a visualization that would better make us appreciate the information in the tabular data. 
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -92,18 +102,17 @@ ggplot(fatal_data_melt, aes(x = Airline, y = value, fill = variable)) +
   geom_bar(stat = "identity", position = "stack") +
   labs(title = "Airlines with more than one Fatal Accidents",
        x = "Airline",
-       y = "Number of Fatal Accidents") +
+       y = "Number of Fatal Accidents",
+       caption = "Figure 1: Distribution of fatal accidents by airline", caption.position = "left") +
   scale_fill_manual(name = "Time Period",
-                    values = c("#F8766D", "#00BA38"),
+                    values = c("grey", "black"),
                     labels = c("1985-1999", "2000-2014")) +
   theme(axis.text.x = element_text(angle = 70, hjust = 1))
+        plot.caption = element_text(hjust = 0)
+
 
 
 ```
-
-
-
-
 ```{r}
 library(ggplot2)
 
@@ -112,22 +121,26 @@ departures <- airlinesafety %>%
   group_by(airline) %>%
   summarise(total_departures = sum(avail_seat_km_per_week))
 
-
 fatal_data <- airlinesafety %>%
   filter(fatal_accidents_85_99 + fatal_accidents_00_14 > 1) %>%
   mutate(total_fatalities = fatal_accidents_85_99 + fatal_accidents_00_14) %>%
   select(airline, total_fatalities) %>%
   inner_join(departures, by = "airline")
 
-ggplot(fatal_data, aes(x = total_departures, y = total_fatalities)) +
+print(
+  ggplot(fatal_data, aes(x = total_departures, y = total_fatalities)) +
   geom_point() +
   labs(title = "Fatal Accidents vs. Departures",
        x = "Total Departures",
-       y = "Total Fatal Accidents")
-
+       y = "Total Fatal Accidents",
+       caption = "Figure 2: Scatter plot of Fatal Accidents vs. Departures")
+)
 
 ```
+Having done these, I sought to plot the number of fatal accidents (for airlines that have had more than one fatal accident) against the number of departures for each airline to see if there is a relationship between the two. 
 
+The idea here here is: 
+If there is a significant positive correlation between the two variables, this may suggest that airlines with more departures also have a higher risk of fatal accidents. Although there may be a connection, this does not necessarily mean that there is a cause-and-effect link. Other factors may also be at play.
 ```{r}
 
 correlation <- cor.test(fatal_data$total_departures, fatal_data$total_fatalities)
@@ -149,14 +162,23 @@ results_df <- data.frame(
   "p-value" = correlation$p.value
 )
 
-
 results_df %>%
-  kable()
-
+  kable() %>%
+  kable_styling() %>%
+  add_header_above(c("Table 4: Correlation Results" = 5))
 ```
+From this analysis and Table 4 above making use of the Pearson correlation test and its associated  p-value, there is a strong positive correlation which is statistically significant. This is an indication that this occurrence (fatal accidents versus departures) is unlikely due to chance.
 
 ## CONCLUSIONS
-I cant exactly infer from the descriptive statistics which airline is the safest for travel. However, from the visualizations, it is clear that there has been and continues to be significant reduction in the number of incidences and fatal accidents. A great indication that there is robust improvement in the services and technology over the years and airlines are doing their utmost best to allay passenger fears, and get them to their destinations safely. The choice though, would totally be a matter of preference! 
+Finally, given the number of departures, it may be possible to identify airlines with a 'higher-than-average' rate of fatal accidents by using the analyses and visualizations presented above.
+
+The descriptive however data don't precisely tell which airline is the safest for travel. However, it is evident from the visualizations that the number of deadly accidents has significantly decreased and has continued to do so. An excellent sign that aviation services and technology have significantly improved over the years, and that airlines are making every effort to assuage passenger concerns and transport passengers safely. 
+
+
+For travelers who are worried about flight safety, this information may be helpful. It's crucial to bear in mind that fatal accidents are still extremely uncommon occurrences, making it challenging to make firm judgments based only on this type of data.
+
+But ultimately, it would come down to personal preference.
+
 
 
 
