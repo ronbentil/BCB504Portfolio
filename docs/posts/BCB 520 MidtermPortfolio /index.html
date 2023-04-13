@@ -223,14 +223,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="preamble" class="level2">
 <h2 class="anchored" data-anchor-id="preamble">PREAMBLE</h2>
-<p>Travel is one thing people all over the world share in common usually for family, business or pleasure; be it local or international. Among the many modes of travel, the fastest and most convenient especially for longer distances is the airplane. However, in spite of the many contingencies put in place, the plane remains a machine which is prone to faults and unforeseen circumstances regardless of the efforts put in place.</p>
+<p>Travel is one thing people all over the world share in common usually for family, business or pleasure; be it local or international. Among the many modes of travel, the fastest and most convenient especially for longer distances is the airplane. However, in spite of the many contingencies put in place, the plane remains a machine which is prone to faults and unforeseen circumstances regardless of the efforts.</p>
 <p>In this assignment, I will analyze data on the number of fatal accidents associated with each airline for about 30 years (1985-1999 and 2000-2014 periods) and attempt to make certain inferences from that.</p>
-<p>Criteria for choice of parameters used in assessment:</p>
-<p>The data set had several airlines so airlines with one fatal incident per year or more in the period 1985-1999 and 2000-2014 were selected for analysis.</p>
+<p>Criteria for choice of parameters used in assessment: The data set had several airlines so airlines with more than one fatal accident within the period were selected for analysis.</p>
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">DATA</h2>
-<p>The data set I will be using for my visualizations is an already existent data set package in R. Source: <a href="https://r-data.pmagunia.com/dataset/airline-safety">Aviation Safety Network</a>.</p>
+<p>The data set (Table 1) I will be using for my analyses and visualizations is already existent in R studio as package. Source: <a href="https://r-data.pmagunia.com/dataset/airline-safety">Aviation Safety Network</a>.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -239,10 +238,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(airlinesafety, <span class="at">caption =</span> <span class="st">"Table 1: Airline Safety Data"</span>, </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">latex_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hold_position"</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"scale_down"</span>, <span class="st">"font_size"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">captionsetup{justification=raggedright,singlelinecheck=false}"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(airlinesafety, <span class="at">caption =</span> <span class="st">"Table 1: Airline Safety Data"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 
@@ -826,7 +823,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </div>
 </div>
-<p>A data dictionary has been added to provide definitions for the various headers in the data set. Below is the data dictionary that defines attributes in the data:</p>
+<p>A data dictionary has been added to provide definitions for the various headers in the data set. Table 2 below is the data dictionary that defines attributes in the data:</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -975,7 +972,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </div>
 </div>
-<p>In addition to the above analysis, I thought it would be important to make a visualization that would better make us appreciate the information in the tabular data</p>
+<p>In addition to the above analysis, I thought it would be important to make a visualization that would better make us appreciate the information in the tabular data.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -1123,7 +1120,7 @@ Attaching package: 'reshape2'</code></pre>
 
 </div>
 </div>
-<p>From this analysis and table above using the Pearson correlation test and its associated p-value, there is a strong positive correlation which is statistically significant. This is an indication that this occurence (fatal accidents versus departures) is unlikely due to chance.</p>
+<p>From this analysis and Table 4 above making use of the Pearson correlation test and its associated p-value, there is a strong positive correlation which is statistically significant. This is an indication that this occurrence (fatal accidents versus departures) is unlikely due to chance.</p>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">CONCLUSIONS</h2>
