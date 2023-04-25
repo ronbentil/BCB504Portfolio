@@ -1,13 +1,13 @@
 ---
 title: "BCB 520- Midterm Portfolio Post"
-subtitle: "Assessment of airline safety thus far"
+subtitle: "Aviation safety"
 author: "Ronald Bentil"
 date: "2023-03-25"
 categories: [Data, Visualizations]
 image: "coa-aviation-safety-image.jpeg"
 code-fold: true
 code-tools: true
-description: "Ascertaining improvement in airline business to guarantee passenger safety and satisfaction"
+description: "Assessment of safety in the aviation industry to boost client confidence"
 ---
 
 ## OVERVIEW
@@ -15,11 +15,9 @@ description: "Ascertaining improvement in airline business to guarantee passenge
 This is a post that will be my Midterm assignment, testing my knowledge and skills acquired in/on Data visualization thus far. 
 
 ## PREAMBLE
-Travel is one thing people all over the world share in common usually for family, business or pleasure; be it local or international. Among the many modes of travel, the fastest and most convenient especially for longer distances is the airplane. However, in spite of the many contingencies put in place, the plane remains a machine which is prone to faults and unforeseen circumstances regardless of the efforts.
+In today's world, air travel has become an essential mode of transportation for millions of people worldwide. While air travel is generally considered safe, accidents do occur from time to time, which can result in loss of life and damage to property. In this context, understanding the relationship between the number of departures and the incidence of fatal accidents may provide valuable insights into the safety of air travel.
 
-In this assignment, I will analyze data on the number of fatal accidents associated with each airline for about 30 years (1985-1999 and 2000-2014 periods) and attempt to make  certain inferences from that.
-
-
+In this post, data collected on some airlines for about 30 years (1985-1999 and 2000-2014 periods) will be analyzed to assess aviation safety.
 
 
 Criteria for choice of parameters used in assessment:
@@ -36,7 +34,7 @@ Source:
 airlinesafety=read.csv('Airline safety datset.csv', header = TRUE)
 
 library(knitr)
-library(kableExtra)
+invisible(library(kableExtra))
 
 kable(airlinesafety, caption = "Table 1: Airline Safety Data") %>%
   kable_styling()
@@ -48,78 +46,106 @@ Table 2 below is the data dictionary that defines attributes in the data:
 
 ```{r}
 
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 library(readxl)
-library(dplyr)
-library(kableExtra)
+invisible(library(dplyr))
+invisible(library(kableExtra))
 
-
-
-airlinesafety_attributes <- read_xlsx("airlinesafetydatadictionary.xlsx")
-knitr::kable(airlinesafety_attributes, caption = "Table 2: Airline Safety Data Dictionary") %>%
-  kable_styling()
+suppressMessages({
+  airlinesafety_attributes <- read_xlsx("airlinesafetydatadictionary.xlsx")
+  knitr::kable(airlinesafety_attributes, caption = "Table 2: Airline Safety Data Dictionary") %>%
+    kable_styling()
+})
 
 ```
 ## VISUALIZATIONS
 
-Further, I went on to generate averages and standard deviations of the number of fatal accidents for the same periods (1985-1999 and 2000-2014)
 ```{r}
 library(knitr)
 
-SumFatal_accidents = apply(airlinesafety[c("fatal_accidents_00_14", "fatal_accidents_85_99")], MARGIN = 2, FUN = function(x) {
-  c(Average = mean(x), SD = sd(x), quantile(x, probs = c(.25, .5, .75, 1)), 100*mean(x > 1))
-})
-rownames(SumFatal_accidents) = c("Average", "Standard deviation", "Q1 (<25%)", "Median", "Q3 (<75%)", "Max",
-                                 "Percentage of airlines with more than one fatal accident")
+SumFatal_accidents <- apply(
+  airlinesafety[c("fatal_accidents_85_99", "fatal_accidents_00_14")], 
+  MARGIN = 2, 
+  FUN = function(x) {
+    c(
+      Average = round(mean(x), digits = 2), 
+      SD = round(sd(x), digits = 2), 
+      quantile(x, probs = c(.25, .5, .75, 1)),
+      round(100*mean(x > 1), digits = 2)
+    )
+  }
+)
 
-kable(SumFatal_accidents, align = "c", caption = "Table 3: Summary of fatal accidents") %>%
+rownames(SumFatal_accidents) <- c(
+  "Average", "Standard deviation", "Q1 (<25%)", 
+  "Median", "Q3 (<75%)", "Max", 
+  "Percentage of airlines with more than one fatal accident"
+)
+
+kable(
+  round(SumFatal_accidents, digits = 2), 
+  align = "c", 
+  caption = "Table 3: Summary of fatal accidents"
+) %>%
   kable_styling()
+
+
 ```
-In addition to the above analysis, I thought it would be important to make a visualization that would better make us appreciate the information in the tabular data. 
+Table 3 shows a comparison in the number of fatal accidents that have occurred between the two time periods and suggests a decline in recent times (2000-2014) compared to earlier (1985-1999). The pattern is shown for individual airlines in Figure 1.
+
 ```{r}
-library(ggplot2)
-library(dplyr)
-library(reshape2)
-
-
+suppressPackageStartupMessages(library(reshape2))
 
 airlinesafety <- read.csv("Airline safety datset.csv")
 
-
 airlines_fatal <- airlinesafety %>%
   filter(fatal_accidents_85_99 + fatal_accidents_00_14 > 1)
-
 
 fatal_data <- data.frame(Airline = airlines_fatal$airline,
                          Fatal_85_99 = airlines_fatal$fatal_accidents_85_99,
                          Fatal_00_14 = airlines_fatal$fatal_accidents_00_14)
 
-
 fatal_data_melt <- melt(fatal_data, id.vars = "Airline")
 
+suppressMessages({
+  fatal_data_summary <- fatal_data_melt %>%
+    group_by(Airline, variable) %>%
+    summarize(total = sum(value))
+  
+  fatal_data_summary <- fatal_data_summary %>%
+    group_by(Airline) %>%
+    summarize(total = sum(total)) %>%
+    arrange(desc(total)) %>%
+    pull(Airline)
+})
+
+fatal_data_melt$Airline <- factor(fatal_data_melt$Airline, levels = fatal_data_summary)
 
 ggplot(fatal_data_melt, aes(x = Airline, y = value, fill = variable)) +
   geom_bar(stat = "identity", position = "stack") +
-  labs(title = "Airlines with more than one Fatal Accidents",
+  labs(title = "Airlines with more than one fatal accident",
        x = "Airline",
-       y = "Number of Fatal Accidents",
-       caption = "Figure 1: Distribution of fatal accidents by airline", caption.position = "left") +
+       y = "Number of fatal accidents",
+       caption = "Figure 1: Number of fatal accidents by airline", caption.position = "left") +
   scale_fill_manual(name = "Time Period",
                     values = c("grey", "black"),
                     labels = c("1985-1999", "2000-2014")) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-        plot.caption = element_text(hjust = 0)
-
+  theme(axis.text.x = element_text(angle = 70, hjust = 1),
+        plot.caption = element_text(hjust = 0))
 
 
 ```
+
+
+
+The dataset provides information on available seat kilometers flown each week. Based on this I explore a comparable quantity- that is weekly departures. In this context, understanding the relationship between the number of departures and the incidence of fatal accidents may provide insights into the safety of air travel.
 ```{r}
 library(ggplot2)
 
-
 departures <- airlinesafety %>%
   group_by(airline) %>%
-  summarise(total_departures = sum(avail_seat_km_per_week))
+  summarise(total_weekly_departures = sum(incidents_00_14)) %>%
+  rename(airline = "airline")  # rename airline_name column to airline
 
 fatal_data <- airlinesafety %>%
   filter(fatal_accidents_85_99 + fatal_accidents_00_14 > 1) %>%
@@ -128,57 +154,35 @@ fatal_data <- airlinesafety %>%
   inner_join(departures, by = "airline")
 
 print(
-  ggplot(fatal_data, aes(x = total_departures, y = total_fatalities)) +
+  ggplot(fatal_data, aes(x = total_weekly_departures, y = total_fatalities)) +
   geom_point() +
-  labs(title = "Fatal Accidents vs. Departures",
-       x = "Total Departures",
-       y = "Total Fatal Accidents",
-       caption = "Figure 2: Scatter plot of Fatal Accidents vs. Departures")
+  labs(title = "Fatal accidents vs. weekly departures",
+       x = "Total weekly departures",
+       y = "Total fatal accidents",
+       caption = "Figure 2: Scatter plot of fatal accidents vs. weekly departures") +
+  theme(plot.caption = element_text(hjust = 0, margin = margin(t = 10)))
 )
 
 ```
-Having done these, I sought to plot the number of fatal accidents (for airlines that have had more than one fatal accident) against the number of departures for each airline to see if there is a relationship between the two. 
 
-The idea here here is: 
-If there is a significant positive correlation between the two variables, this may suggest that airlines with more departures also have a higher risk of fatal accidents. Although there may be a connection, this does not necessarily mean that there is a cause-and-effect link. Other factors may also be at play.
 ```{r}
-
-correlation <- cor.test(fatal_data$total_departures, fatal_data$total_fatalities)
-
-
-cat("Correlation Coefficient:", correlation$estimate, "\n")
-cat("p-value:", correlation$p.value, "\n")
-
-library(dplyr)
+correlation <- cor(fatal_data$total_weekly_departures, fatal_data$total_fatalities)
+round_correlation <- signif(correlation, digits = 2)
+print(paste("The correlation coefficient is:", round_correlation))
 
 
-correlation <- cor.test(fatal_data$total_departures, fatal_data$total_fatalities)
-
-
-results_df <- data.frame(
-  "Variable 1" = "Total Departures",
-  "Variable 2" = "Total Fatalities",
-  "Correlation Coefficient" = correlation$estimate,
-  "p-value" = correlation$p.value
-)
-
-results_df %>%
-  kable() %>%
-  kable_styling() %>%
-  add_header_above(c("Table 4: Correlation Results" = 5))
 ```
-From this analysis and Table 4 above making use of the Pearson correlation test and its associated  p-value, there is a strong positive correlation which is statistically significant. This is an indication that this occurrence (fatal accidents versus departures) is unlikely due to chance.
+
+
+The scatter plot shows a general trend of increasing fatal accidents as the number of weekly departures increases, and the correlation coefficient of 0.65 indicates a moderately strong positive relationship between the two variables. This suggests that airlines with a higher number of weekly departures may be more likely to experience fatal accidents, although other factors could also play a role.
+
+However, correlation does not imply causation, and there could be other factors that contribute to the observed relationship. Further analysis would be needed to fully understand the factors that influence fatal accidents in the airline industry.
 
 ## CONCLUSIONS
-Finally, given the number of departures, it may be possible to identify airlines with a 'higher-than-average' rate of fatal accidents by using the analyses and visualizations presented above.
+The descriptive data don't precisely tell which airline is the safest for travel. However,  the visualizations show that the number of deadly accidents has significantly decreased and has continued to do so. However, the visualizations are observations based on temporal patterns and would require further analysis and inclusion of additional data to make profound conclusions.
 
-The descriptive however data don't precisely tell which airline is the safest for travel. However, it is evident from the visualizations that the number of deadly accidents has significantly decreased and has continued to do so. An excellent sign that aviation services and technology have significantly improved over the years, and that airlines are making every effort to assuage passenger concerns and transport passengers safely. 
+Additionally, airlines with a higher number of weekly departures may face more challenges in maintaining the safety of their operations. This could be due to factors such as increased pressure to meet schedules and maintain profitability, as well as the need to manage a larger and more complex fleet of aircraft.
 
+Airlines with higher numbers of weekly departures may benefit from investing in additional safety measures and procedures to mitigate the risks associated with their operations. This could include initiatives such as more extensive pilot training programs, regular safety audits, and increased use of technology to monitor and improve operational safety.
 
-For travelers who are worried about flight safety, this information may be helpful. It's crucial to bear in mind that fatal accidents are still extremely uncommon occurrences, making it challenging to make firm judgments based only on this type of data.
-
-But ultimately, it would come down to personal preference.
-
-
-
-
+Overall, these highlight the importance of maintaining high safety standards in the aviation industry, especially for airlines with larger operations. By prioritizing safety and investing in appropriate measures, airlines may not only reduce the risk of accidents and fatalities, but also enhance their reputation and build trust with their passengers.

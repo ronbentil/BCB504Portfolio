@@ -33,11 +33,13 @@ library(readxl)
 library(rnaturalearth)
 library(rnaturalearthdata)
 library(dplyr)
+library(transformr)
+
 
 Malaria <- read.csv("National_Unit_data.csv")
 
 Incidence <- Malaria %>%
-  filter(Metric == "Mortality Rate" & Year %in% c("2019", "2020", "2021")) %>%
+  filter(Metric == "Infection Prevalence")%>%
   mutate(Prevalence = Value) %>%
   select(c(ISO3, Year, Prevalence))
 
@@ -57,15 +59,45 @@ map_data <- world_map %>%
 Now I will make a plot!
 
 ```{r}
-ggplot() +
-  geom_sf(data = map_data, aes(fill = Prevalence)) +
+library(gganimate)
+library(transformr)
+library(magick)
+library(gifski)
+
+
+p <- ggplot() +
+  geom_sf(data = map_data%>%
+          filter(continent=="Africa")
+          , aes(fill = Prevalence)) +
   scale_fill_gradient(low = "white", high = "red", na.value = "gray", name = "Malaria Prevalence") +
   theme_minimal() +
   theme(axis.text = element_blank(), axis.ticks = element_blank(), axis.title = element_blank()) +
   labs(title = "Malaria Prevalence by Country") +
-  facet_wrap(~ Year)
+  facet_wrap(~continent, ncol = 2)
+
+
+p_animated <- p + 
+  enter_fade() + 
+  exit_fade() 
+
+animate(p_animated, fps = 10, duration = 10)
 
 ```
+
+
+
+
+```{r}
+subset_map_data <- map_data %>%
+  filter(continent == "Africa")
+
+# Display the first 10 rows of the subset
+head(subset_map_data, 10)
+
+# Use dput() to display the subset
+dput(subset_map_data)
+```
+
 
 Oh SNAP! We made a MAP!
 
