@@ -1,0 +1,213 @@
+---
+title: "BCB 520- Finals Portfolio Post"
+subtitle: "Global alcohol consumption patterns"
+author: "Ronald Bentil"
+date: "2023-05-04"
+categories: [Data, Visualizations]
+image: "Photo.jpeg"
+code-fold: true
+code-tools: true
+description: "Interesting insights into variations of popular and preferred alcoholic beverages among nations"
+---
+
+## OVERVIEW
+This is a post that would serve as my finals. It basically encompasses application of knowledge of visualizing spatial data and possibly exploring  interactive visualization tools. 
+
+
+## PREAMBLE
+
+
+
+
+## DATA
+The clean data set was obtained from [FiveThirtyEight](https://github.com/fivethirtyeight/data/tree/master/alcohol-consumption)'s GitHub repository referenced to be sourced from the World Health Organisation, Global Information System on Alcohol and Health (GISAH), 2010. 
+
+
+
+
+
+## VISUALIZATIONS
+Figure 1 is a map showing visualizing the data which represents patterns of beer, spirit and wine consumption, indicative of the alcohol consumption across different countries
+
+```{r}
+
+library(ggplot2)
+library(maps)
+suppressPackageStartupMessages(library(dplyr))
+library(viridisLite)
+
+
+data <- read.csv("alcohol consumption.csv")
+
+
+data <- distinct(data, country, .keep_all = TRUE)
+
+
+world_map <- map_data("world")
+
+
+merged_data <- merge(world_map, data, by.x = "region", by.y = "country")
+
+
+plot <- suppressWarnings({
+  ggplot(merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = beer_servings), color = "white", size = 0.1) +
+  geom_polygon(aes(fill = spirit_servings), color = "white", size = 0.1) +
+  geom_polygon(aes(fill = wine_servings), color = "white", size = 0.1) +
+  scale_fill_viridis_c(name = "Servings",
+                       option = "D",
+                       begin = 0.1, end = 0.9, 
+                       direction = -1,
+                       guide = guide_colorbar(title.position = "top", 
+                                              title.hjust = 0.5, 
+                                              label.hjust = 0.5,
+                                              barwidth = 20, barheight = 0.5,
+                                              ticks = TRUE, nbin = 20)) +
+  labs(title = "Alcohol consumption across countries",
+       caption = "Figure 1: Pattern of beer, spirit and wine servings",
+       fill = "Servings (per capita)") +
+  theme_void()
+
+})
+
+plot <- plot + theme(legend.position = "bottom")
+
+
+print(plot)
+
+```
+
+
+
+Following this, Figures 2 to 4 breaks up the different types of alcohol(beer, spirit and wine) respectively, and represents their pattern of consumption across the different countries as indicated in the data.
+
+```{r}
+library(ggplot2)
+library(maps)
+library(dplyr)
+library(viridisLite)
+
+
+data <- read.csv("alcohol consumption.csv")
+
+
+data <- distinct(data, country, .keep_all = TRUE)
+
+
+world_map <- map_data("world")
+
+
+merged_data <- merge(world_map, data, by.x = "region", by.y = "country")
+
+
+plot_beer <- suppressWarnings(ggplot(merged_data, aes(x = long, y = lat, group = group))) +
+  geom_polygon(aes(fill = beer_servings), color = "white", size = 0.1) +
+  scale_fill_viridis_c(name = "Beer Servings",
+                       option = "D",
+                       begin = 0.1, end = 0.9, 
+                       direction = -1,
+                       guide = guide_colorbar(title.position = "top", 
+                                              title.hjust = 0.5, 
+                                              label.hjust = 0.5,
+                                              barwidth = 20, barheight = 0.5,
+                                              ticks = TRUE, nbin = 20)) +
+  labs(title = "Beer consumption by country",
+       caption = "Figure 2: Pattern of beer servings",
+       fill = "Beer Servings (per capita)") +
+  theme_void()
+
+plot_beer <- plot_beer + theme(legend.position = "bottom")
+
+
+print(plot_beer)
+
+
+plot_spirit <- suppressWarnings(ggplot(merged_data, aes(x = long, y = lat, group = group))) +
+  geom_polygon(aes(fill = spirit_servings), color = "white", size = 0.1) +
+  scale_fill_viridis_c(name = "Spirit Servings",
+                       option = "D",
+                       begin = 0.1, end = 0.9, 
+                       direction = -1,
+                       guide = guide_colorbar(title.position = "top", 
+                                              title.hjust = 0.5, 
+                                              label.hjust = 0.5,
+                                              barwidth = 20, barheight = 0.5,
+                                              ticks = TRUE, nbin = 20)) +
+  labs(title = "Spirit consumption by country",
+       caption = "Figure 3: Pattern of spirit servings",
+       fill = "Spirit Servings (per capita)") +
+  theme_void()
+
+
+plot_spirit <- plot_spirit + theme(legend.position = "bottom")
+
+
+print(plot_spirit)
+
+
+plot_wine <- suppressWarnings(ggplot(merged_data, aes(x = long, y = lat, group = group))) +
+  geom_polygon(aes(fill = wine_servings), color = "white", size = 0.1) +
+  scale_fill_viridis_c(name = "Wine Servings",
+                       option = "D",
+                       begin = 0.1, end = 0.9, 
+                       direction = -1,
+                       guide = guide_colorbar(title.position = "top", 
+                                              title.hjust = 0.5, 
+                                              label.hjust = 0.5,
+                                              barwidth = 20, barheight = 0.5,
+                                              ticks = TRUE, nbin = 20)) +
+  labs(title = "Wine consumption by country",
+       caption = "Figure 4: Pattern of wine servings",
+       fill = "Wine Servings (per capita)") +
+  theme_void()
+
+
+plot_wine <- plot_wine + theme(legend.position = "bottom")
+
+
+print(plot_wine)
+
+
+library(cowplot)
+```
+
+
+Figure 5 however, not so different in principle from the other figures represents the data on an interactive map, providing an opportunity for further exploration of the data by zooming in and out, clicking on certain markers to view additional information. This representation was based on the total liters of pure alcohol by region. 
+
+Two base map layers are represented here: the World Imagery base map layer (which may make it easier to see the geographic patterns in alcohol consumption) and the Toner Lite base map layer (which may make it easier to see the relative differences in alcohol consumption) between regions
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+library(leaflet)
+library(htmltools)
+
+suppressMessages({
+
+merged_data %>% 
+  leaflet() %>% 
+  addProviderTiles(providers$Stamen.TonerLite, group = "Toner Lite") %>% 
+  addProviderTiles(providers$Esri.WorldImagery, group = "World Imagery") %>% 
+  addLayersControl(baseGroups = c("World Imagery", "Toner Lite")) %>% 
+  addMarkers(label = merged_data$region, 
+             clusterOptions = markerClusterOptions(), 
+             popup = merged_data$total_litres_of_pure_alcohol) %>% 
+  htmltools::tags$h1("Figure 5: Total litres of pure alcohol by region",
+        style = "font-size: 12px; font-weight: normal; text-align: center;") %>% 
+  htmlwidgets::onRender("
+      function(el, x) {
+          $(el).append('<div class=\"leaflet-control leaflet-caption\">Source: FiveThirtyEight</div>');
+      }
+  ")
+
+})  
+
+```
+
+
+
+## CONCLUSIONS
+Alcohol consumption varies significantly per region around the world, as the map illustrates. For instance, Europe typically has greater alcohol consumption rates than Africa or Asia. This shows that social and cultural factors have a big impact on how people behave when they drink.
+The most widely consumed form of alcohol worldwide is beer, which is depicted on the map as being more popular than wine or spirits in most nations.
+
+The nations with high alcohol consumption levels have been associated with relatively high GDP per capita, like the United States and Canada. This suggests that there may be a relationship between alcohol use and economic issues. This implies that economic circumstances and drinking habits can be related although extensive data is required to establish this.
+
+One profound limitation of this data set is that it does not consider demographic factors in relation to alcohol use and possible risk factor predictions of alcohol use which would be very essential information. 
