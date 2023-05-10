@@ -11,10 +11,13 @@ description: "Interesting insights into variations of popular and preferred alco
 ---
 
 ## OVERVIEW
-This is a post that would serve as my finals. It basically encompasses application of knowledge of visualizing spatial data and possibly exploring  interactive visualization tools. 
+This is a post that would serve as my assessment for finals in this course. It basically encompasses application of knowledge of visualizing spatial data and possibly exploring  interactive visualization tools. 
 
 
 ## PREAMBLE
+It is a common occurrence for people to use alcohol, and many cultures and societies include it in their social and religious customs. Alcohol abuse, on the other hand, can have detrimental effects on people's health, cause accidents, and cause social harm. Therefore, it is crucial for study to understand patterns of alcohol consumption and the variables that affect them.
+
+The data set contains information on the overall amount of pure alcohol consumed as well as rates for beer, wine, and spirits. We can learn more about the patterns and trends of alcohol consumption in various nations,by exploring this data set.
 
 
 
@@ -79,7 +82,7 @@ print(plot)
 
 
 
-Following this, Figures 2 to 4 breaks up the different types of alcohol(beer, spirit and wine) respectively, and represents their pattern of consumption across the different countries as indicated in the data.
+Following this, Figures 2 to 4 break up the different types of alcohol (beer, spirit and wine) respectively, and represents their pattern of consumption across the different countries as indicated in the data.
 
 ```{r}
 library(ggplot2)
@@ -209,5 +212,7 @@ Alcohol consumption varies significantly per region around the world, as the map
 The most widely consumed form of alcohol worldwide is beer, which is depicted on the map as being more popular than wine or spirits in most nations.
 
 The nations with high alcohol consumption levels have been associated with relatively high GDP per capita, like the United States and Canada. This suggests that there may be a relationship between alcohol use and economic issues. This implies that economic circumstances and drinking habits can be related although extensive data is required to establish this.
+
+Overall, this information may be useful for policymakers, health professionals, and others interested in encouraging responsible drinking and lessen the negative effects of alcohol consumption.
 
 One profound limitation of this data set is that it does not consider demographic factors in relation to alcohol use and possible risk factor predictions of alcohol use which would be very essential information. 
